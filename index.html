@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Bloom Studios</title>
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ffe8f5, #e9e5ff, #dff7ff);
+  color: #4b4168;
+  min-height: 100vh;
+}
+
+.header {
+  text-align: center;
+  padding: 30px 20px 15px;
+}
+
+.logo {
+  font-size: 42px;
+  font-weight: 900;
+  color: #7d63c8;
+  text-shadow: 3px 3px 0 white;
+}
+
+.subtitle {
+  font-size: 17px;
+  margin-top: 5px;
+}
+
+.points {
+  display: inline-block;
+  margin-top: 18px;
+  padding: 12px 22px;
+  background: white;
+  border-radius: 30px;
+  box-shadow: 0 5px 15px rgba(80,60,120,0.15);
+  font-size: 19px;
+  font-weight: bold;
+}
+
+.shop-button {
+  display: block;
+  margin: 15px auto 25px;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 25px;
+  background: #ff9dcc;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(200,100,160,0.25);
+}
+
+.shop-button:active {
+  transform: scale(0.95);
+}
+
+.library {
+  max-width: 1000px;
+  margin: auto;
+  padding: 10px 18px 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+
+.game {
+  background: rgba(255,255,255,0.9);
+  border-radius: 25px;
+  padding: 22px;
+  text-align: center;
+  box-shadow: 0 8px 20px rgba(80,60,120,0.13);
+  transition: 0.2s;
+}
+
+.game:hover {
+  transform: translateY(-5px);
+}
+
+.icon {
+  font-size: 48px;
+}
+
+.game h2 {
+  margin: 10px 0 7px;
+  font-size: 21px;
+}
+
+.game p {
+  min-height: 45px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.play {
+  border: none;
+  border-radius: 20px;
+  padding: 11px 25px;
+  background: #8c78d8;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.play:active {
+  transform: scale(0.94);
+}
+
+.best {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #777;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+}
+</style>
+</head>
+
+<body>
+
+<header class="header">
+
+  <div class="logo">🌸 STAR BLOOM STUDIOS ⭐</div>
+
+  <div class="subtitle">
+    Cute games. Big adventures. ✨
+  </div>
+
+  <div class="points">
+    ⭐ Star Points: <span id="points">0</span>
+  </div>
+
+  <button class="shop-button" onclick="openShop()">
+    🛍️ STAR BLOOM SHOP
+  </button>
+
+</header>
+
+<main class="library">
+
+  <div class="game">
+    <div class="icon">🔎</div>
+    <h2>Spot the Correct</h2>
+    <p>Find the object that appears in both photos.</p>
+    <button class="play" onclick="startGame(1)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">🌀</div>
+    <h2>Reality Glitch</h2>
+    <p>Find the impossible or strange detail.</p>
+    <button class="play" onclick="startGame(2)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">🧠</div>
+    <h2>Memory Mess</h2>
+    <p>Remember the scene and spot what changed.</p>
+    <button class="play" onclick="startGame(3)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">📦</div>
+    <h2>Object Switch</h2>
+    <p>Figure out where an object belongs.</p>
+    <button class="play" onclick="startGame(4)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">⚡</div>
+    <h2>Blink & Catch</h2>
+    <p>Remember something shown very quickly.</p>
+    <button class="play" onclick="startGame(5)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">🏠</div>
+    <h2>Who Lives Here?</h2>
+    <p>Match clues to the correct place.</p>
+    <button class="play" onclick="startGame(6)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">🔐</div>
+    <h2>The Secret Object</h2>
+    <p>Solve clues to discover the hidden object.</p>
+    <button class="play" onclick="startGame(7)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+  <div class="game">
+    <div class="icon">🌎</div>
+    <h2>Same Thing, Different World</h2>
+    <p>Find the connection between two scenes.</p>
+    <button class="play" onclick="startGame(8)">PLAY</button>
+    <div class="best">🏆 Best Score: 0</div>
+  </div>
+
+</main>
+
+<div class="footer">
+  🌷 Welcome to Star Bloom Studios 🌷
+</div>
+
+<script>
+
+let points = Number(localStorage.getItem("starPoints")) || 0;
+
+document.getElementById("points").textContent = points;
+
+function startGame(gameNumber) {
+  alert(
+    "🌸 Game " + gameNumber +
+    " is coming soon!\n\nWe're going to build this game next. ⭐"
+  );
+}
+
+function openShop() {
+  alert(
+    "🛍️ STAR BLOOM SHOP\n\n" +
+    "⭐ 100 — Cute Avatar\n" +
+    "⭐ 250 — Special Background\n" +
+    "⭐ 500 — Sparkle Effect\n" +
+    "⭐ 1,000 — Golden Player Badge\n" +
+    "⭐ 2,000 — Special Theme\n\n" +
+    "We'll make the real shop soon! ✨"
+  );
+}
+
+</script>
+
+</body>
+</html>
