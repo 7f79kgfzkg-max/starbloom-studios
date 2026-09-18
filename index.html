@@ -8,60 +8,64 @@
 <style>
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #ffe8f5, #e9e5ff, #dff7ff);
-  color: #4b4168;
+  background: linear-gradient(135deg, #ffe6f4, #e9e4ff, #ddf7ff);
+  color: #51466b;
   min-height: 100vh;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .header {
   text-align: center;
-  padding: 30px 20px 15px;
+  padding: 28px 15px 15px;
 }
 
 .logo {
-  font-size: 42px;
+  font-size: clamp(30px, 7vw, 46px);
   font-weight: 900;
-  color: #7d63c8;
-  text-shadow: 3px 3px 0 white;
+  color: #8067c9;
+  text-shadow: 3px 3px white;
 }
 
 .subtitle {
-  font-size: 17px;
-  margin-top: 5px;
+  margin-top: 6px;
 }
 
 .points {
   display: inline-block;
-  margin-top: 18px;
-  padding: 12px 22px;
+  margin-top: 16px;
   background: white;
+  padding: 11px 22px;
   border-radius: 30px;
-  box-shadow: 0 5px 15px rgba(80,60,120,0.15);
-  font-size: 19px;
+  font-size: 18px;
   font-weight: bold;
+  box-shadow: 0 5px 18px rgba(70,50,100,.15);
+}
+
+.shop-button,
+.back-button {
+  border: 0;
+  border-radius: 25px;
+  padding: 13px 24px;
+  font-size: 17px;
+  font-weight: bold;
+  color: white;
+  background: #ff91c8;
+  box-shadow: 0 5px 12px rgba(200,80,150,.2);
 }
 
 .shop-button {
   display: block;
-  margin: 15px auto 25px;
-  padding: 14px 28px;
-  border: none;
-  border-radius: 25px;
-  background: #ff9dcc;
-  color: white;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 5px 12px rgba(200,100,160,0.25);
-}
-
-.shop-button:active {
-  transform: scale(0.95);
+  margin: 14px auto 25px;
 }
 
 .library {
@@ -74,16 +78,16 @@ body {
 }
 
 .game {
-  background: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,.92);
   border-radius: 25px;
   padding: 22px;
   text-align: center;
-  box-shadow: 0 8px 20px rgba(80,60,120,0.13);
-  transition: 0.2s;
+  box-shadow: 0 8px 20px rgba(80,60,120,.13);
+  transition: .2s;
 }
 
-.game:hover {
-  transform: translateY(-5px);
+.game:active {
+  transform: scale(.98);
 }
 
 .icon {
@@ -92,7 +96,6 @@ body {
 
 .game h2 {
   margin: 10px 0 7px;
-  font-size: 21px;
 }
 
 .game p {
@@ -101,151 +104,787 @@ body {
   line-height: 1.4;
 }
 
-.play {
-  border: none;
+.play,
+.answer {
+  border: 0;
   border-radius: 20px;
-  padding: 11px 25px;
-  background: #8c78d8;
+  padding: 12px 25px;
+  background: #8975d8;
   color: white;
   font-size: 16px;
   font-weight: bold;
-  cursor: pointer;
-}
-
-.play:active {
-  transform: scale(0.94);
 }
 
 .best {
   margin-top: 10px;
   font-size: 13px;
-  color: #777;
 }
 
-.footer {
+.hidden {
+  display: none !important;
+}
+
+/* GAME SCREEN */
+
+#gameScreen {
+  max-width: 900px;
+  margin: auto;
+  padding: 18px;
   text-align: center;
+}
+
+.gameTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
+
+.back-button {
+  background: #8067c9;
+}
+
+.gameTitle {
+  font-size: 28px;
+  font-weight: 900;
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+
+.stat {
+  background: white;
+  padding: 9px 15px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(70,50,100,.12);
+  font-weight: bold;
+}
+
+.timerBox {
+  background: white;
+  border-radius: 25px;
+  padding: 13px;
+  margin: 15px auto;
+  max-width: 500px;
+}
+
+.timerNumber {
+  font-size: 30px;
+  font-weight: 900;
+}
+
+.timerBar {
+  height: 10px;
+  background: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.timerFill {
+  height: 100%;
+  width: 100%;
+  background: #ff91c8;
+  transition: width 1s linear;
+}
+
+.instruction {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 18px;
+}
+
+.scenes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  max-width: 700px;
+  margin: auto;
+}
+
+.scene {
+  background: white;
+  border-radius: 25px;
+  padding: 18px;
+  min-height: 230px;
+  box-shadow: 0 8px 20px rgba(70,50,100,.13);
+}
+
+.sceneTitle {
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.objects {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.object {
+  border: 3px solid transparent;
+  background: #f8f5ff;
+  border-radius: 20px;
+  padding: 18px 8px;
+  font-size: 38px;
+  transition: .15s;
+}
+
+.object:active {
+  transform: scale(.9);
+}
+
+.object.selected {
+  border-color: #8975d8;
+  background: #eee8ff;
+}
+
+.message {
+  min-height: 35px;
+  margin: 18px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.correct {
+  animation: pop .45s;
+}
+
+.wrong {
+  animation: shake .4s;
+}
+
+@keyframes pop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes shake {
+  0%,100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* RESULT */
+
+.result {
+  background: white;
+  border-radius: 30px;
+  padding: 35px 20px;
+  max-width: 550px;
+  margin: 40px auto;
+  box-shadow: 0 10px 30px rgba(70,50,100,.15);
+}
+
+.result h1 {
+  font-size: 34px;
+}
+
+.resultButton {
+  border: 0;
+  border-radius: 23px;
+  padding: 13px 22px;
+  margin: 7px;
+  color: white;
+  background: #8975d8;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* SHOP */
+
+#shopScreen {
+  max-width: 850px;
+  margin: auto;
   padding: 20px;
-  font-size: 13px;
+}
+
+.shopTitle {
+  text-align: center;
+  font-size: 34px;
+}
+
+.shopBalance {
+  text-align: center;
+  background: white;
+  padding: 13px;
+  border-radius: 25px;
+  font-weight: bold;
+  margin: 15px auto 25px;
+  max-width: 300px;
+}
+
+.shopItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.shopItem {
+  background: white;
+  padding: 22px;
+  border-radius: 25px;
+  text-align: center;
+  box-shadow: 0 7px 18px rgba(70,50,100,.12);
+}
+
+.shopEmoji {
+  font-size: 45px;
+}
+
+.buy {
+  border: 0;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background: #ff91c8;
+  color: white;
+  font-weight: bold;
+}
+
+.owned {
+  background: #9bd9b1;
 }
 </style>
 </head>
 
 <body>
 
+<!-- LIBRARY -->
+
+<div id="libraryScreen">
+
 <header class="header">
-
   <div class="logo">🌸 STAR BLOOM STUDIOS ⭐</div>
-
-  <div class="subtitle">
-    Cute games. Big adventures. ✨
-  </div>
+  <div class="subtitle">Cute games. Big adventures. ✨</div>
 
   <div class="points">
-    ⭐ Star Points: <span id="points">0</span>
+    ⭐ Star Points: <span id="libraryPoints">0</span>
   </div>
 
   <button class="shop-button" onclick="openShop()">
     🛍️ STAR BLOOM SHOP
   </button>
-
 </header>
 
 <main class="library">
 
-  <div class="game">
-    <div class="icon">🔎</div>
-    <h2>Spot the Correct</h2>
-    <p>Find the object that appears in both photos.</p>
-    <button class="play" onclick="startGame(1)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">🔎</div>
+  <h2>Spot the Correct</h2>
+  <p>Find the object that appears in both photos.</p>
+  <button class="play" onclick="startSpotGame()">PLAY</button>
+  <div class="best">🏆 Best Score: <span id="best1">0</span></div>
+</div>
 
-  <div class="game">
-    <div class="icon">🌀</div>
-    <h2>Reality Glitch</h2>
-    <p>Find the impossible or strange detail.</p>
-    <button class="play" onclick="startGame(2)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">🌀</div>
+  <h2>Reality Glitch</h2>
+  <p>Find the impossible or strange detail.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
-  <div class="game">
-    <div class="icon">🧠</div>
-    <h2>Memory Mess</h2>
-    <p>Remember the scene and spot what changed.</p>
-    <button class="play" onclick="startGame(3)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">🧠</div>
+  <h2>Memory Mess</h2>
+  <p>Remember the scene and spot what changed.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
-  <div class="game">
-    <div class="icon">📦</div>
-    <h2>Object Switch</h2>
-    <p>Figure out where an object belongs.</p>
-    <button class="play" onclick="startGame(4)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">📦</div>
+  <h2>Object Switch</h2>
+  <p>Figure out where an object belongs.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
-  <div class="game">
-    <div class="icon">⚡</div>
-    <h2>Blink & Catch</h2>
-    <p>Remember something shown very quickly.</p>
-    <button class="play" onclick="startGame(5)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">⚡</div>
+  <h2>Blink & Catch</h2>
+  <p>Remember something shown very quickly.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
-  <div class="game">
-    <div class="icon">🏠</div>
-    <h2>Who Lives Here?</h2>
-    <p>Match clues to the correct place.</p>
-    <button class="play" onclick="startGame(6)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">🏠</div>
+  <h2>Who Lives Here?</h2>
+  <p>Match clues to the correct place.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
-  <div class="game">
-    <div class="icon">🔐</div>
-    <h2>The Secret Object</h2>
-    <p>Solve clues to discover the hidden object.</p>
-    <button class="play" onclick="startGame(7)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">🔐</div>
+  <h2>The Secret Object</h2>
+  <p>Solve clues to find the object.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
-  <div class="game">
-    <div class="icon">🌎</div>
-    <h2>Same Thing, Different World</h2>
-    <p>Find the connection between two scenes.</p>
-    <button class="play" onclick="startGame(8)">PLAY</button>
-    <div class="best">🏆 Best Score: 0</div>
-  </div>
+<div class="game">
+  <div class="icon">🌎</div>
+  <h2>Same Thing, Different World</h2>
+  <p>Find the connection between two scenes.</p>
+  <button class="play" onclick="comingSoon()">PLAY</button>
+  <div class="best">🏆 Best Score: 0</div>
+</div>
 
 </main>
-
-<div class="footer">
-  🌷 Welcome to Star Bloom Studios 🌷
 </div>
+
+
+<!-- SPOT GAME -->
+
+<div id="gameScreen" class="hidden">
+
+<div class="gameTop">
+  <button class="back-button" onclick="backToLibrary()">← Game Library</button>
+  <div class="gameTitle">🔎 Spot the Correct</div>
+</div>
+
+<div class="stats">
+  <div class="stat">⭐ Score: <span id="score">0</span></div>
+  <div class="stat">❤️ Lives: <span id="lives">3</span></div>
+  <div class="stat">🔥 Streak: <span id="streak">0</span></div>
+  <div class="stat">🔢 Round: <span id="round">1</span>/10</div>
+</div>
+
+<div class="timerBox">
+  <div class="timerNumber">⏱️ <span id="timer">20</span></div>
+  <div class="timerBar">
+    <div class="timerFill" id="timerFill"></div>
+  </div>
+</div>
+
+<div class="instruction">
+  Find the object that appears in BOTH scenes! 🔎
+</div>
+
+<div class="scenes">
+
+<div class="scene">
+  <div class="sceneTitle">🌷 SCENE A</div>
+  <div class="objects" id="sceneA"></div>
+</div>
+
+<div class="scene">
+  <div class="sceneTitle">🌈 SCENE B</div>
+  <div class="objects" id="sceneB"></div>
+</div>
+
+</div>
+
+<div class="message" id="message"></div>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div id="resultScreen" class="hidden">
+<div class="result">
+  <h1>🌸 AMAZING!</h1>
+  <p>Your Score</p>
+  <h1>⭐ <span id="finalScore">0</span></h1>
+  <p>⭐ Star Points Earned: <b><span id="earnedPoints">0</span></b></p>
+  <p>🏆 Best Score: <b><span id="finalBest">0</span></b></p>
+
+  <button class="resultButton" onclick="startSpotGame()">
+    🔄 PLAY AGAIN
+  </button>
+
+  <button class="resultButton" onclick="backToLibrary()">
+    ← GAME LIBRARY
+  </button>
+</div>
+</div>
+
+
+<!-- SHOP -->
+
+<div id="shopScreen" class="hidden">
+
+<button class="back-button" onclick="backToLibrary()">
+  ← Game Library
+</button>
+
+<h1 class="shopTitle">🛍️ STAR BLOOM SHOP</h1>
+
+<div class="shopBalance">
+  ⭐ Your Star Points: <span id="shopPoints">0</span>
+</div>
+
+<div class="shopItems">
+
+<div class="shopItem">
+  <div class="shopEmoji">🧸</div>
+  <h2>Cute Avatar</h2>
+  <p>⭐ 100 Points</p>
+  <button class="buy" id="item1" onclick="buyItem(1,100)">
+    BUY
+  </button>
+</div>
+
+<div class="shopItem">
+  <div class="shopEmoji">🌸</div>
+  <h2>Special Background</h2>
+  <p>⭐ 250 Points</p>
+  <button class="buy" id="item2" onclick="buyItem(2,250)">
+    BUY
+  </button>
+</div>
+
+<div class="shopItem">
+  <div class="shopEmoji">✨</div>
+  <h2>Sparkle Effect</h2>
+  <p>⭐ 500 Points</p>
+  <button class="buy" id="item3" onclick="buyItem(3,500)">
+    BUY
+  </button>
+</div>
+
+<div class="shopItem">
+  <div class="shopEmoji">🏆</div>
+  <h2>Golden Player Badge</h2>
+  <p>⭐ 1,000 Points</p>
+  <button class="buy" id="item4" onclick="buyItem(4,1000)">
+    BUY
+  </button>
+</div>
+
+<div class="shopItem">
+  <div class="shopEmoji">🌌</div>
+  <h2>Special Theme</h2>
+  <p>⭐ 2,000 Points</p>
+  <button class="buy" id="item5" onclick="buyItem(5,2000)">
+    BUY
+  </button>
+</div>
+
+</div>
+</div>
+
 
 <script>
 
 let points = Number(localStorage.getItem("starPoints")) || 0;
+let bestScore = Number(localStorage.getItem("spotBest")) || 0;
 
-document.getElementById("points").textContent = points;
+let score = 0;
+let lives = 3;
+let streak = 0;
+let round = 1;
+let timer = 20;
+let timerInterval;
 
-function startGame(gameNumber) {
-  alert(
-    "🌸 Game " + gameNumber +
-    " is coming soon!\n\nWe're going to build this game next. ⭐"
-  );
+const rounds = [
+  {
+    common: "🧸",
+    a: ["🧸","🍎","🐱","🌸"],
+    b: ["⭐","🧸","🐶","🌈"]
+  },
+  {
+    common: "🍕",
+    a: ["🍕","🎈","🐰","🌙"],
+    b: ["🌸","🐱","🍕","⭐"]
+  },
+  {
+    common: "🚀",
+    a: ["🚀","🍩","🐸","☀️"],
+    b: ["🧸","🚀","🌈","🍓"]
+  },
+  {
+    common: "🌻",
+    a: ["🌻","🎁","🐶","⭐"],
+    b: ["🍎","🌻","🦋","🌙"]
+  },
+  {
+    common: "🎸",
+    a: ["🎸","🍪","🐱","🌈"],
+    b: ["🌸","🎸","🍓","☀️"]
+  },
+  {
+    common: "🍩",
+    a: ["🍩","🚗","🐰","⭐"],
+    b: ["🌙","🍩","🐸","🎈"]
+  },
+  {
+    common: "🦋",
+    a: ["🦋","🍕","🐶","🌸"],
+    b: ["⭐","🌻","🦋","🍎"]
+  },
+  {
+    common: "🎁",
+    a: ["🎁","🐱","🌙","🍓"],
+    b: ["🚀","🎁","☀️","🐰"]
+  },
+  {
+    common: "🍓",
+    a: ["🍓","🎸","🐸","⭐"],
+    b: ["🌈","🍓","🧸","🌸"]
+  },
+  {
+    common: "🌈",
+    a: ["🌈","🍩","🐶","🎁"],
+    b: ["🦋","🌈","🍎","🚗"]
+  }
+];
+
+function updatePoints() {
+  document.getElementById("libraryPoints").textContent = points;
+  document.getElementById("shopPoints").textContent = points;
+  localStorage.setItem("starPoints", points);
+}
+
+function startSpotGame() {
+
+  clearInterval(timerInterval);
+
+  document.getElementById("libraryScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("shopScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.remove("hidden");
+
+  score = 0;
+  lives = 3;
+  streak = 0;
+  round = 1;
+
+  document.getElementById("score").textContent = score;
+  document.getElementById("lives").textContent = lives;
+  document.getElementById("streak").textContent = streak;
+
+  loadRound();
+}
+
+function loadRound() {
+
+  clearInterval(timerInterval);
+
+  if (round > 10 || lives <= 0) {
+    endGame();
+    return;
+  }
+
+  document.getElementById("round").textContent = round;
+  document.getElementById("message").textContent = "";
+
+  let data = rounds[round - 1];
+
+  createScene("sceneA", data.a, data.common);
+  createScene("sceneB", data.b, data.common);
+
+  timer = Math.max(8, 20 - (round - 1));
+
+  document.getElementById("timer").textContent = timer;
+  document.getElementById("timerFill").style.width = "100%";
+
+  timerInterval = setInterval(() => {
+
+    timer--;
+
+    document.getElementById("timer").textContent = timer;
+
+    document.getElementById("timerFill").style.width =
+      (timer / Math.max(8, 20 - (round - 1))) * 100 + "%";
+
+    if (timer <= 0) {
+      clearInterval(timerInterval);
+      wrongAnswer(true);
+    }
+
+  },1000);
+}
+
+function createScene(id, objects, common) {
+
+  const container = document.getElementById(id);
+  container.innerHTML = "";
+
+  objects.forEach(object => {
+
+    const button = document.createElement("button");
+
+    button.className = "object";
+    button.textContent = object;
+
+    button.onclick = () => checkAnswer(object, common, button);
+
+    container.appendChild(button);
+
+  });
+}
+
+function checkAnswer(answer, correct, button) {
+
+  if (button.dataset.used) return;
+
+  button.dataset.used = "true";
+
+  if (answer === correct) {
+
+    clearInterval(timerInterval);
+
+    streak++;
+
+    let earned = 50 + (timer * 5) + (streak * 10);
+
+    score += earned;
+
+    button.classList.add("correct");
+
+    document.getElementById("score").textContent = score;
+    document.getElementById("streak").textContent = streak;
+
+    document.getElementById("message").textContent =
+      "✨ CORRECT! +" + earned + " points!";
+
+    setTimeout(() => {
+      round++;
+      loadRound();
+    },900);
+
+  } else {
+
+    wrongAnswer(false);
+
+  }
+}
+
+function wrongAnswer(timeout) {
+
+  clearInterval(timerInterval);
+
+  lives--;
+  streak = 0;
+
+  document.getElementById("lives").textContent = lives;
+  document.getElementById("streak").textContent = streak;
+
+  document.getElementById("message").textContent =
+    timeout ? "⏰ Time's up!" : "💫 Oops! Try again!";
+
+  document.getElementById("gameScreen").classList.add("wrong");
+
+  setTimeout(() => {
+    document.getElementById("gameScreen").classList.remove("wrong");
+
+    if (lives <= 0) {
+      endGame();
+    } else {
+      round++;
+      loadRound();
+    }
+
+  },900);
+}
+
+function endGame() {
+
+  clearInterval(timerInterval);
+
+  let earnedPoints = Math.floor(score / 10);
+
+  points += earnedPoints;
+
+  if (score > bestScore) {
+    bestScore = score;
+    localStorage.setItem("spotBest", bestScore);
+  }
+
+  localStorage.setItem("starPoints", points);
+
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
+
+  document.getElementById("finalScore").textContent = score;
+  document.getElementById("earnedPoints").textContent = earnedPoints;
+  document.getElementById("finalBest").textContent = bestScore;
+
+  document.getElementById("best1").textContent = bestScore;
+
+  updatePoints();
 }
 
 function openShop() {
-  alert(
-    "🛍️ STAR BLOOM SHOP\n\n" +
-    "⭐ 100 — Cute Avatar\n" +
-    "⭐ 250 — Special Background\n" +
-    "⭐ 500 — Sparkle Effect\n" +
-    "⭐ 1,000 — Golden Player Badge\n" +
-    "⭐ 2,000 — Special Theme\n\n" +
-    "We'll make the real shop soon! ✨"
-  );
+
+  document.getElementById("libraryScreen").classList.add("hidden");
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("shopScreen").classList.remove("hidden");
+
+  updatePoints();
+  updateShopButtons();
 }
+
+function buyItem(item, cost) {
+
+  let owned = localStorage.getItem("shopItem" + item);
+
+  if (owned === "true") return;
+
+  if (points < cost) {
+    alert("🌸 You need more Star Points!");
+    return;
+  }
+
+  points -= cost;
+
+  localStorage.setItem("shopItem" + item, "true");
+  localStorage.setItem("starPoints", points);
+
+  updatePoints();
+  updateShopButtons();
+
+  alert("✨ UNLOCKED! Your new item is yours!");
+}
+
+function updateShopButtons() {
+
+  for (let i = 1; i <= 5; i++) {
+
+    const button = document.getElementById("item" + i);
+
+    if (localStorage.getItem("shopItem" + i) === "true") {
+      button.textContent = "✓ OWNED";
+      button.classList.add("owned");
+    }
+
+  }
+}
+
+function backToLibrary() {
+
+  clearInterval(timerInterval);
+
+  document.getElementById("gameScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.add("hidden");
+  document.getElementById("shopScreen").classList.add("hidden");
+  document.getElementById("libraryScreen").classList.remove("hidden");
+
+  document.getElementById("best1").textContent = bestScore;
+
+  updatePoints();
+}
+
+function comingSoon() {
+  alert("🌸 This game is next! We're still building it. ⭐");
+}
+
+updatePoints();
+updateShopButtons();
+document.getElementById("best1").textContent = bestScore;
 
 </script>
 
