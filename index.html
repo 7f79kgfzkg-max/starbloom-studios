@@ -2,777 +2,608 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Star Bloom Studios</title>
+
 <style>
 *{box-sizing:border-box}
+
 body{
-margin:0;font-family:Arial,sans-serif;color:white;min-height:100vh;
-background:linear-gradient(135deg,#21164f,#713d9d,#e86fa8);
-transition:.5s
+  margin:0;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ffdff3,#dcd7ff,#c9efff);
+  color:#352b52;
 }
-button,input{font:inherit}
-button{border:0;cursor:pointer}
-.screen{min-height:100vh;padding:20px}
-.wrap{max-width:1050px;margin:auto}
-.hidden{display:none!important}
-.logo{text-align:center;font-size:42px;font-weight:900;margin:18px 0 3px}
-.made{text-align:center;font-size:15px;opacity:.8;margin-bottom:25px}
-.card{
-background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.2);
-border-radius:28px;padding:22px;backdrop-filter:blur(12px);
-box-shadow:0 15px 40px #0003
+
+.app{
+  max-width:1100px;
+  margin:auto;
+  padding:20px;
 }
+
+header{
+  text-align:center;
+  padding:25px 10px;
+}
+
+.logo{
+  font-size:clamp(28px,6vw,50px);
+  font-weight:900;
+}
+
+.made{
+  margin-top:6px;
+  font-size:18px;
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:15px 0 25px;
+}
+
+.points,.profile{
+  background:rgba(255,255,255,.75);
+  border:2px solid white;
+  border-radius:22px;
+  padding:12px 18px;
+  box-shadow:0 8px 25px rgba(80,60,120,.12);
+  font-weight:bold;
+}
+
 button{
-border-radius:17px;padding:13px 18px;font-weight:800;
-transition:.15s
+  border:0;
+  cursor:pointer;
+  font:inherit;
 }
-button:active{transform:scale(.94)}
-.primary{background:white;color:#643d99}
-.pink{background:#ff73ad;color:white}
-.gold{background:#ffd45b;color:#553b00}
-.dark{background:#0004;color:white}
-.blue{background:#62cfff;color:white}
-.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
-.points{background:#0004;padding:11px 16px;border-radius:16px;font-weight:bold}
-input{
-width:100%;padding:16px;border:0;border-radius:17px;margin:10px 0;
-outline:none
+
+.profile{
+  cursor:pointer;
 }
-.avatarGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.avatar{
-background:#fff2;border-radius:20px;padding:15px;text-align:center;
-font-size:38px;cursor:pointer
+
+.games{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:18px;
 }
-.avatar.sel{outline:4px solid white;background:#fff4}
-.games{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+
 .game{
-padding:20px;border-radius:25px;background:#fff2;border:1px solid #fff2;
-min-height:210px;display:flex;flex-direction:column
+  min-height:230px;
+  padding:22px;
+  border-radius:30px;
+  background:rgba(255,255,255,.82);
+  border:3px solid rgba(255,255,255,.9);
+  box-shadow:0 12px 30px rgba(80,60,120,.15);
+  transition:.2s;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
 }
-.gameIcon{font-size:48px}
-.game p{opacity:.8;flex:1}
-.game button{width:100%}
-.hud{
-display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin:15px 0
+
+.game:hover{
+  transform:translateY(-6px) rotate(-1deg);
 }
-.hud span{background:#0004;padding:9px 13px;border-radius:13px}
-.board{
-background:#0003;border-radius:24px;padding:20px;min-height:250px
+
+.icon{
+  font-size:55px;
 }
-.big{font-size:70px;text-align:center}
-.choices{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:15px}
-.choice{background:#fff2;color:white;font-size:25px;min-height:75px}
-.choice:hover{background:#fff4}
-.shop{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}
-.item{background:#fff2;border-radius:22px;padding:18px}
-.itemIcon{font-size:45px}
-.result{text-align:center}
-.final{font-size:60px;font-weight:900}
-.memoryGrid{
-display:grid;grid-template-columns:repeat(4,1fr);gap:10px
+
+.game h2{
+  margin:8px 0;
 }
-.mem{
-height:75px;background:#fff2;border-radius:16px;
-display:flex;align-items:center;justify-content:center;font-size:35px
+
+.game p{
+  color:#70677f;
 }
-.clickGrid{
-display:grid;grid-template-columns:repeat(4,1fr);gap:10px
+
+.play{
+  width:100%;
+  padding:13px;
+  border-radius:18px;
+  background:#8d73ff;
+  color:white;
+  font-weight:bold;
 }
-.click{
-height:85px;border-radius:18px;background:#fff2;color:white;font-size:35px
+
+.play:hover{
+  background:#7257e8;
 }
-.sparkles{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:99}
-.spark{position:absolute;animation:float 5s linear infinite}
+
+.bottom{
+  display:flex;
+  gap:15px;
+  margin-top:25px;
+  flex-wrap:wrap;
+}
+
+.bigbtn{
+  flex:1;
+  min-width:180px;
+  padding:18px;
+  border-radius:22px;
+  background:white;
+  box-shadow:0 8px 22px rgba(80,60,120,.12);
+  font-weight:bold;
+}
+
+.hidden{display:none}
+
+.screen{
+  text-align:center;
+  padding:25px;
+}
+
+.back{
+  padding:12px 18px;
+  border-radius:16px;
+  background:white;
+  margin-bottom:20px;
+}
+
+.card{
+  background:rgba(255,255,255,.85);
+  border-radius:30px;
+  padding:30px;
+  max-width:650px;
+  margin:auto;
+  box-shadow:0 15px 40px rgba(80,60,120,.15);
+}
+
+.option{
+  display:block;
+  width:100%;
+  margin:12px 0;
+  padding:16px;
+  border-radius:18px;
+  background:#eee9ff;
+  font-weight:bold;
+}
+
+.option:hover{
+  background:#dcd4ff;
+}
+
+input{
+  padding:15px;
+  border-radius:15px;
+  border:2px solid #ddd;
+  width:100%;
+  max-width:350px;
+  font-size:17px;
+  margin:10px;
+}
+
+.avatar{
+  font-size:70px;
+}
+
+.shop{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+}
+
+.item{
+  background:white;
+  padding:20px;
+  border-radius:22px;
+}
+
+.item button{
+  padding:10px 15px;
+  border-radius:14px;
+  background:#8d73ff;
+  color:white;
+  margin-top:10px;
+}
+
 @keyframes float{
-from{transform:translateY(105vh) rotate(0)}
-to{transform:translateY(-10vh) rotate(360deg)}
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
 }
-.blueWall{background:linear-gradient(135deg,#102b68,#2796d1,#7be8ff)}
-.purpleWall{background:linear-gradient(135deg,#271052,#733eb4,#c58bff)}
-.pinkWall{background:linear-gradient(135deg,#72153e,#d34b91,#ff9dca)}
-.rainbowWall{background:linear-gradient(135deg,#ff759d,#ffc96d,#70dff5,#a47cff)}
-@media(max-width:650px){
-.logo{font-size:32px}
-.games,.shop{grid-template-columns:1fr}
-.avatarGrid{grid-template-columns:repeat(4,1fr)}
+
+.icon{
+  animation:float 2.5s ease-in-out infinite;
 }
 </style>
 </head>
 
 <body>
-<div id="sparkles" class="sparkles"></div>
 
-<!-- PROFILE SETUP -->
-<section id="setup" class="screen">
-<div class="wrap">
-<div class="logo">🌸 Star Bloom Studios 🌸</div>
-<div class="made">made by Reem ✨</div>
+<div class="app">
 
-<div class="card">
-<h2>✨ Welcome to Star Bloom!</h2>
-<p>Create your player profile.</p>
-<input id="name" placeholder="Enter your name">
+<header>
+  <div class="logo">🌸 Star Bloom Studios 🌸</div>
+  <div class="made">made by Reem ✨</div>
+</header>
 
-<h3>Choose your starter avatar</h3>
-<div class="avatarGrid" id="starter"></div>
-<br>
-<button class="primary" onclick="createPlayer()">🌸 Enter Star Bloom</button>
-</div>
-</div>
-</section>
+<div id="home">
 
-<!-- LIBRARY -->
-<section id="library" class="screen hidden">
-<div class="wrap">
-
-<div class="top">
-<button class="dark" onclick="show('profile')">👤 Profile</button>
-<div class="points">⭐ <span id="topPoints">0</span></div>
-<button class="gold" onclick="show('shop')">🛍️ Shop</button>
+<div class="topbar">
+  <div class="points">⭐ Star Points: <span id="points">0</span></div>
+  <div class="profile" onclick="showProfile()">👤 <span id="playerName">Player</span></div>
 </div>
 
-<div class="logo">🌸 Star Bloom Studios 🌸</div>
-<div class="made">made by Reem ✨</div>
+<div class="games">
 
-<div class="card">
-<h2>🎮 Game Library</h2>
-<p>Pick a game. Every game is different!</p>
-<div class="games" id="games"></div>
+<div class="game">
+<div>
+<div class="icon">🎯</div>
+<h2>Spot the Correct</h2>
+<p>Find the matching object before time runs out!</p>
 </div>
-</div>
-</section>
-
-<!-- PROFILE -->
-<section id="profile" class="screen hidden">
-<div class="wrap">
-<div class="top">
-<button class="dark" onclick="show('library')">← Games</button>
-<button class="gold" onclick="show('avatars')">🦄 Avatar Shop</button>
+<button class="play" onclick="startGame(1)">PLAY</button>
 </div>
 
-<br>
-<div class="card" style="text-align:center">
-<div id="profileAvatar" style="font-size:80px"></div>
-<h2 id="profileName"></h2>
-<h3>⭐ <span id="profilePoints"></span> Star Points</h3>
+<div class="game">
+<div>
+<div class="icon">🌀</div>
+<h2>Reality Glitch</h2>
+<p>Something is wrong... can you spot it?</p>
 </div>
-<br>
-<div class="card">
-<h2>🏆 Best Scores</h2>
-<div id="bests"></div>
-</div>
-</div>
-</section>
-
-<!-- SHOP -->
-<section id="shop" class="screen hidden">
-<div class="wrap">
-<div class="top">
-<button class="dark" onclick="show('library')">← Games</button>
-<div class="points">⭐ <span id="shopPoints"></span></div>
-</div>
-<h1>🛍️ Star Bloom Shop</h1>
-<div class="shop" id="shopList"></div>
-</div>
-</section>
-
-<!-- AVATAR SHOP -->
-<section id="avatars" class="screen hidden">
-<div class="wrap">
-<div class="top">
-<button class="dark" onclick="show('profile')">← Profile</button>
-<div class="points">⭐ <span id="avatarPoints"></span></div>
-</div>
-<h1>🦄 Avatar Shop</h1>
-<div class="shop" id="avatarList"></div>
-</div>
-</section>
-
-<!-- GAME -->
-<section id="game" class="screen hidden">
-<div class="wrap">
-<div class="top">
-<button class="dark" onclick="leave()">← Leave</button>
-<div class="points">⭐ <span id="gamePoints"></span></div>
+<button class="play" onclick="startGame(2)">PLAY</button>
 </div>
 
-<div class="card">
-<h2 id="gameTitle"></h2>
-<div class="hud">
-<span>⏱️ <b id="time">20</b></span>
-<span>❤️ <b id="lives">3</b></span>
-<span>⭐ <b id="score">0</b></span>
-<span>🔥 <b id="streak">0</b></span>
-<span>Round <b id="round">1</b>/8</span>
+<div class="game">
+<div>
+<div class="icon">🧠</div>
+<h2>Memory Mess</h2>
+<p>Remember what you see and catch the change.</p>
 </div>
-<div id="board" class="board"></div>
+<button class="play" onclick="startGame(3)">PLAY</button>
 </div>
-</div>
-</section>
 
-<!-- RESULT -->
-<section id="result" class="screen hidden">
-<div class="wrap">
-<div class="card result">
-<h1>🎉 Game Over!</h1>
-<div class="final" id="final"></div>
-<h2 id="earned"></h2>
-<p id="best"></p>
-<br>
-<button class="primary" onclick="show('library')">🌸 Back to Game Library</button>
+<div class="game">
+<div>
+<div class="icon">📦</div>
+<h2>Object Switch</h2>
+<p>Put each object where it belongs.</p>
 </div>
+<button class="play" onclick="startGame(4)">PLAY</button>
 </div>
-</section>
+
+<div class="game">
+<div>
+<div class="icon">⚡</div>
+<h2>Blink & Catch</h2>
+<p>Watch carefully and tap the object fast!</p>
+</div>
+<button class="play" onclick="startGame(5)">PLAY</button>
+</div>
+
+<div class="game">
+<div>
+<div class="icon">🏠</div>
+<h2>Who Lives Here?</h2>
+<p>Use the clues to discover the resident.</p>
+</div>
+<button class="play" onclick="startGame(6)">PLAY</button>
+</div>
+
+<div class="game">
+<div>
+<div class="icon">🔮</div>
+<h2>The Secret Object</h2>
+<p>Unlock clues and solve the mystery.</p>
+</div>
+<button class="play" onclick="startGame(7)">PLAY</button>
+</div>
+
+<div class="game">
+<div>
+<div class="icon">🌎</div>
+<h2>Same Thing, Different World</h2>
+<p>Find the connection between two worlds.</p>
+</div>
+<button class="play" onclick="startGame(8)">PLAY</button>
+</div>
+
+</div>
+
+<div class="bottom">
+<button class="bigbtn" onclick="showShop()">🛍️ Star Bloom Shop</button>
+<button class="bigbtn" onclick="showAvatars()">🧚 Avatar Shop</button>
+</div>
+
+</div>
+
+<div id="gameScreen" class="screen hidden"></div>
+<div id="profileScreen" class="screen hidden"></div>
+<div id="shopScreen" class="screen hidden"></div>
+<div id="avatarScreen" class="screen hidden"></div>
+
+</div>
 
 <script>
-/* PLAYER */
 
-let players=JSON.parse(localStorage.getItem("starBloomPlayers")||"{}");
-let current=localStorage.getItem("starBloomCurrent")||"";
-let selected="🐰";
+let points=Number(localStorage.getItem("starPoints")||0);
+let playerName=localStorage.getItem("playerName")||"Player";
+let currentGame=0;
+let score=0;
 
-const starters=["🐰","🐱","🐻","🐥"];
-
-const avatars=[
-["🦊","Fox",100],["🐼","Panda",200],["🐸","Frog",300],
-["🧚","Fairy",500],["🦄","Unicorn",750],["🐉","Dragon",1000],
-["👑","Royal",2000]
-];
-
-function p(){return players[current]}
+document.getElementById("points").textContent=points;
+document.getElementById("playerName").textContent=playerName;
 
 function save(){
-localStorage.setItem("starBloomPlayers",JSON.stringify(players));
-localStorage.setItem("starBloomCurrent",current);
+ localStorage.setItem("starPoints",points);
+ localStorage.setItem("playerName",playerName);
 }
 
-function createPlayer(){
-let n=document.getElementById("name").value.trim();
-if(!n)return alert("Enter your name first!");
-players[n] ||= {
-name:n,avatar:selected,points:0,
-owned:starters.slice(),items:[],
-wall:"blue",sparkle:false,best:{}
-};
-current=n;
-save();
-show("library");
-theme();
+function hideAll(){
+ document.getElementById("home").classList.add("hidden");
+ document.getElementById("gameScreen").classList.add("hidden");
+ document.getElementById("profileScreen").classList.add("hidden");
+ document.getElementById("shopScreen").classList.add("hidden");
+ document.getElementById("avatarScreen").classList.add("hidden");
 }
 
-function starterDraw(){
-document.getElementById("starter").innerHTML=starters.map(a=>
-`<div class="avatar ${a===selected?"sel":""}" onclick="selected='${a}';starterDraw()">${a}</div>`
-).join("");
+function home(){
+ hideAll();
+ document.getElementById("home").classList.remove("hidden");
+ document.getElementById("points").textContent=points;
+ document.getElementById("playerName").textContent=playerName;
 }
 
-/* NAV */
+function startGame(n){
+ currentGame=n;
+ score=0;
+ hideAll();
 
-function show(id){
-document.querySelectorAll(".screen").forEach(x=>x.classList.add("hidden"));
-document.getElementById(id).classList.remove("hidden");
+ let screen=document.getElementById("gameScreen");
+ screen.classList.remove("hidden");
 
-if(id==="library")library();
-if(id==="profile")profile();
-if(id==="shop")shop();
-if(id==="avatars")avatarShop();
-theme();
+ let games={
+ 1:["🎯","Spot the Correct","Which object belongs in BOTH scenes?"],
+ 2:["🌀","Reality Glitch","Something here doesn't make sense!"],
+ 3:["🧠","Memory Mess","Remember the scene!"],
+ 4:["📦","Object Switch","Where does this object belong?"],
+ 5:["⚡","Blink & Catch","Get ready to tap!"],
+ 6:["🏠","Who Lives Here?","Read the clues and choose!"],
+ 7:["🔮","The Secret Object","Unlock the mystery!"],
+ 8:["🌎","Same Thing, Different World","What connects these two?"]
+ };
+
+ let g=games[n];
+
+ screen.innerHTML=`
+ <button class="back" onclick="home()">← Game Library</button>
+ <div class="card">
+ <div style="font-size:70px">${g[0]}</div>
+ <h1>${g[1]}</h1>
+ <p>${g[2]}</p>
+ <div id="gameArea"></div>
+ </div>`;
+
+ runMiniGame(n);
 }
 
-/* LIBRARY */
+function runMiniGame(n){
 
-const gameInfo=[
-["spot","🔎","Spot the Correct","Find the matching object."],
-["glitch","👀","Reality Glitch","Catch the impossible thing."],
-["memory","🧠","Memory Mess","Remember the cards before they flip."],
-["switch","🔄","Object Switch","Put the object in the right place."],
-["blink","⚡","Blink & Catch","Catch the object when it appears."],
-["lives","🏠","Who Lives Here?","Match the character to their home."],
-["secret","🔐","The Secret Object","Solve the clues."],
-["world","🌎","Same Thing, Different World","Connect the two worlds."]
-];
+ let area=document.getElementById("gameArea");
 
-function library(){
-document.getElementById("topPoints").textContent=p().points;
-document.getElementById("games").innerHTML=gameInfo.map(g=>`
-<div class="game">
-<div class="gameIcon">${g[1]}</div>
-<h2>${g[2]}</h2>
-<p>${g[3]}</p>
-<button class="primary" onclick="start('${g[0]}')">▶ PLAY</button>
-</div>`).join("");
+ const questions=[
+  {
+   q:"Which object appears in both scenes?",
+   a:["🌸 Flower","🚀 Rocket","🍕 Pizza","🎈 Balloon"],
+   correct:0
+  },
+  {
+   q:"Which thing is impossible?",
+   a:["🐟 Fish swimming","☀️ Sun shining","🐧 Penguin flying","🌳 Tree growing"],
+   correct:2
+  },
+  {
+   q:"Which object changed?",
+   a:["🌙 Moon","🍎 Apple","⭐ Star","🐱 Cat"],
+   correct:1
+  },
+  {
+   q:"Where does the fish belong?",
+   a:["🌊 Ocean","☁️ Sky","🌳 Tree","🚀 Space"],
+   correct:0
+  },
+  {
+   q:"Which object appeared?",
+   a:["⭐ Star","🍓 Strawberry","🐰 Bunny","🎸 Guitar"],
+   correct:2
+  },
+  {
+   q:"Who probably lives here?",
+   a:["🧙 Wizard","🐠 Fish","🚀 Astronaut","🦖 Dinosaur"],
+   correct:2
+  },
+  {
+   q:"The clue says: 'I shine at night.' What am I?",
+   a:["☀️ Sun","🌙 Moon","🌳 Tree","🍕 Pizza"],
+   correct:1
+  },
+  {
+   q:"What connects these worlds?",
+   a:["🌸 Flowers","🚗 Cars","🌊 Water","⭐ Stars"],
+   correct:3
+  }
+ ];
+
+ let data=questions[n-1];
+
+ area.innerHTML=`
+ <h2>${data.q}</h2>
+ <div id="options"></div>
+ <p>⭐ Score: <b id="score">0</b></p>`;
+
+ let options=document.getElementById("options");
+
+ data.a.forEach((x,i)=>{
+  let b=document.createElement("button");
+  b.className="option";
+  b.textContent=x;
+  b.onclick=()=>answer(i,data.correct,b);
+  options.appendChild(b);
+ });
 }
 
-/* PROFILE */
+function answer(i,correct,button){
 
-function profile(){
-document.getElementById("profileAvatar").textContent=p().avatar;
-document.getElementById("profileName").textContent=p().name;
-document.getElementById("profilePoints").textContent=p().points;
+ let buttons=document.querySelectorAll(".option");
 
-document.getElementById("bests").innerHTML=gameInfo.map(g=>
-`<p>${g[1]} ${g[2]} — 🏆 ${p().best[g[0]]||0}</p>`
-).join("");
+ buttons.forEach(b=>b.disabled=true);
+
+ if(i===correct){
+  score+=100;
+  points+=100;
+  button.textContent+="  ✨ CORRECT!";
+ }else{
+  button.textContent+="  ❌";
+ }
+
+ document.getElementById("score").textContent=score;
+
+ save();
+ document.getElementById("points").textContent=points;
+
+ setTimeout(()=>{
+  document.getElementById("gameArea").innerHTML=`
+   <h2>${i===correct?"🌟 Amazing!":"💫 Nice try!"}</h2>
+   <p>You earned ${i===correct?100:0} Star Points.</p>
+   <button class="play" onclick="home()">Back to Game Library</button>
+  `;
+ },700);
 }
 
-/* SHOP */
+function showProfile(){
+ hideAll();
+ let s=document.getElementById("profileScreen");
+ s.classList.remove("hidden");
 
-const items=[
-["blue","💙","Blue Dream Wallpaper",250],
-["purple","💜","Purple Galaxy Wallpaper",250],
-["pink","💗","Pink Bloom Wallpaper",250],
-["rainbow","🌈","Random Wallpaper",400],
-["sparkle","✨","Sparkle Effect",500],
-["badge","🏆","Golden Badge",1000],
-["special","🌟","Special Theme",2000]
-];
-
-function shop(){
-document.getElementById("shopPoints").textContent=p().points;
-document.getElementById("shopList").innerHTML=items.map(x=>{
-let owned=p().items.includes(x[0]);
-return `<div class="item">
-<div class="itemIcon">${x[1]}</div>
-<h2>${x[2]}</h2>
-<p>⭐ ${x[3]}</p>
-<button class="${owned?"blue":"primary"}"
-onclick="${owned?`equipItem('${x[0]}')`:`buyItem('${x[0]}')`}">
-${owned?"EQUIP":"BUY ⭐ "+x[3]}
-</button>
-</div>`;
-}).join("");
+ s.innerHTML=`
+ <button class="back" onclick="home()">← Back</button>
+ <div class="card">
+ <div class="avatar">🐰</div>
+ <h1>👤 Your Profile</h1>
+ <p>Star Points: ⭐ ${points}</p>
+ <input id="nameInput" value="${playerName}" placeholder="Your name">
+ <br>
+ <button class="play" onclick="changeName()">Save Name</button>
+ </div>`;
 }
 
-function buyItem(id){
-let item=items.find(x=>x[0]===id);
-if(p().points<item[3])return alert("You need more Star Points!");
-p().points-=item[3];
-p().items.push(id);
-if(id==="sparkle")p().sparkle=true;
-save();shop();theme();
+function changeName(){
+ let value=document.getElementById("nameInput").value.trim();
+ if(value){
+  playerName=value;
+  save();
+ }
+ home();
 }
 
-function equipItem(id){
-if(["blue","purple","pink","rainbow"].includes(id)){
-p().wall=id;
-save();theme();
-}
-if(id==="sparkle"){
-p().sparkle=!p().sparkle;
-save();theme();
-}
-}
+function showShop(){
+ hideAll();
+ let s=document.getElementById("shopScreen");
+ s.classList.remove("hidden");
 
-/* AVATAR SHOP */
+ s.innerHTML=`
+ <button class="back" onclick="home()">← Back</button>
+ <div class="card">
+ <h1>🛍️ Star Bloom Shop</h1>
+ <p>⭐ You have ${points} Star Points</p>
 
-function avatarShop(){
-document.getElementById("avatarPoints").textContent=p().points;
-document.getElementById("avatarList").innerHTML=avatars.map(a=>{
-let owned=p().owned.includes(a[0]);
-return `<div class="item">
-<div class="itemIcon">${a[0]}</div>
-<h2>${a[1]}</h2>
-<p>⭐ ${a[2]}</p>
-<button class="${owned?"blue":"primary"}"
-onclick="${owned?`equipAvatar('${a[0]}')`:`buyAvatar('${a[0]}')`}">
-${owned?"USE AVATAR":"BUY ⭐ "+a[2]}
-</button>
-</div>`;
-}).join("");
+ <div class="shop">
+
+ ${shopItem("💙","Blue Dream Wallpaper",250)}
+ ${shopItem("💜","Purple Galaxy Wallpaper",250)}
+ ${shopItem("💗","Pink Bloom Wallpaper",250)}
+ ${shopItem("🌈","Random Wallpaper",400)}
+ ${shopItem("✨","Sparkle Effect",500)}
+ ${shopItem("🏆","Golden Badge",1000)}
+ ${shopItem("🌟","Special Theme",2000)}
+
+ </div>
+ </div>`;
 }
 
-function buyAvatar(id){
-let a=avatars.find(x=>x[0]===id);
-if(p().points<a[2])return alert("Not enough Star Points!");
-p().points-=a[2];
-p().owned.push(a[0]);
-p().avatar=a[0];
-save();avatarShop();
+function shopItem(icon,name,cost){
+ return `
+ <div class="item">
+ <div style="font-size:45px">${icon}</div>
+ <h3>${name}</h3>
+ <p>⭐ ${cost}</p>
+ <button onclick="buy(${cost},'${name}')">BUY</button>
+ </div>`;
 }
 
-function equipAvatar(a){
-p().avatar=a;
-save();avatarShop();
+function buy(cost,name){
+ if(points>=cost){
+  points-=cost;
+  save();
+  alert("✨ You bought "+name+"!");
+  showShop();
+ }else{
+  alert("You need more ⭐ Star Points!");
+ }
 }
 
-/* THEME */
+function showAvatars(){
+ hideAll();
+ let s=document.getElementById("avatarScreen");
+ s.classList.remove("hidden");
 
-function theme(){
-if(!p())return;
-document.body.className="";
-let w=p().wall;
-if(w==="blue")document.body.classList.add("blueWall");
-if(w==="purple")document.body.classList.add("purpleWall");
-if(w==="pink")document.body.classList.add("pinkWall");
-if(w==="rainbow")document.body.classList.add("rainbowWall");
+ s.innerHTML=`
+ <button class="back" onclick="home()">← Back</button>
+ <div class="card">
+ <h1>🧚 Avatar Shop</h1>
+ <p>⭐ You have ${points} Star Points</p>
 
-let s=document.getElementById("sparkles");
-s.innerHTML="";
-if(p().sparkle){
-for(let i=0;i<22;i++){
-let x=document.createElement("div");
-x.className="spark";
-x.textContent="✨";
-x.style.left=Math.random()*100+"%";
-x.style.animationDelay=Math.random()*5+"s";
-x.style.fontSize=12+Math.random()*20+"px";
-s.appendChild(x);
-}
-}
-}
+ <div class="shop">
 
-/* GAME ENGINE */
+ ${avatarItem("🐰","Bunny",0)}
+ ${avatarItem("🐱","Kitty",0)}
+ ${avatarItem("🐻","Bear",0)}
+ ${avatarItem("🐥","Chick",0)}
+ ${avatarItem("🦊","Fox",100)}
+ ${avatarItem("🐼","Panda",200)}
+ ${avatarItem("🐸","Frog",300)}
+ ${avatarItem("🧚","Fairy",500)}
+ ${avatarItem("🦄","Unicorn",750)}
+ ${avatarItem("🐉","Dragon",1000)}
+ ${avatarItem("👑","Royal",2000)}
 
-let type="",score=0,lives=3,streak=0,round=1;
-let answer=null,timer=null,seconds=20;
-let locked=false;
-
-function start(t){
-type=t;score=0;lives=3;streak=0;round=1;
-document.getElementById("gameTitle").textContent=
-gameInfo.find(x=>x[0]===t)[2];
-show("game");
-next();
+ </div>
+ </div>`;
 }
 
-function clock(n){
-clearInterval(timer);
-seconds=n;
-document.getElementById("time").textContent=seconds;
-timer=setInterval(()=>{
-seconds--;
-document.getElementById("time").textContent=seconds;
-if(seconds<=0){
-clearInterval(timer);
-wrong();
-}
-},1000);
+function avatarItem(icon,name,cost){
+ return `
+ <div class="item">
+ <div style="font-size:55px">${icon}</div>
+ <h3>${name}</h3>
+ <p>${cost===0?"FREE":"⭐ "+cost}</p>
+ <button onclick="buyAvatar(${cost},'${name}', '${icon}')">
+ ${cost===0?"USE":"BUY"}
+ </button>
+ </div>`;
 }
 
-function hud(){
-document.getElementById("score").textContent=score;
-document.getElementById("lives").textContent=lives;
-document.getElementById("streak").textContent=streak;
-document.getElementById("round").textContent=round;
-document.getElementById("gamePoints").textContent=p().points;
+function buyAvatar(cost,name,icon){
+ if(cost===0){
+  alert("✨ "+name+" selected!");
+  return;
+ }
+
+ if(points>=cost){
+  points-=cost;
+  save();
+  alert("🧚 You unlocked "+name+"!");
+  showAvatars();
+ }else{
+  alert("You need more ⭐ Star Points!");
+ }
 }
-
-function next(){
-locked=false;
-if(round>8||lives<=0)return end();
-
-if(type==="spot")spot();
-if(type==="glitch")glitch();
-if(type==="memory")memory();
-if(type==="switch")switchGame();
-if(type==="blink")blink();
-if(type==="lives")livesGame();
-if(type==="secret")secret();
-if(type==="world")world();
-hud();
-}
-
-/* 1 — SPOT THE CORRECT
-   FIND THE ONLY MATCH */
-
-function spot(){
-let objects=["🍎","🍋","🍓","🍇","🍒","🥝","🍉","🍊"];
-let common=objects[Math.floor(Math.random()*objects.length)];
-let a=[common];
-let b=[common];
-
-while(a.length<5)a.push(objects[Math.floor(Math.random()*objects.length)]);
-while(b.length<5)b.push(objects[Math.floor(Math.random()*objects.length)]);
-
-document.getElementById("board").innerHTML=`
-<h2>🔎 Find the object in BOTH scenes!</h2>
-<div class="scene big">${a.join(" ")}</div>
-<div class="scene big">${b.join(" ")}</div>
-<div class="choices">
-${shuffle(objects.slice()).map(x=>
-`<button class="choice" onclick="pick('${x}')">${x}</button>`).join("")}
-</div>`;
-answer=common;
-clock(18);
-}
-
-/* 2 — REALITY GLITCH
-   FIND THE MOVING/ODD ITEM */
-
-function glitch(){
-let normal=["🌸","🌸","🌸","🌸","🌸"];
-let odd=["🚀","🍕","🐸","🚗","🌙","🛸"];
-let strange=odd[Math.floor(Math.random()*odd.length)];
-let pos=Math.floor(Math.random()*5);
-normal[pos]=strange;
-answer=strange;
-
-document.getElementById("board").innerHTML=`
-<h2>👀 Something is wrong!</h2>
-<div class="big">${normal.join(" ")}</div>
-<p>Tap the impossible object.</p>
-<div class="choices">
-${shuffle(normal.slice()).map(x=>
-`<button class="choice" onclick="pick('${x}')">${x}</button>`).join("")}
-</div>`;
-clock(12);
-}
-
-/* 3 — MEMORY MESS
-   FLIP A CARD MEMORY GAME */
-
-let memoryCards=[],firstPick=null,secondPick=null,memoryLock=false;
-
-function memory(){
-let icons=shuffle(["🌸","⭐","🍓","🐸","🌙","🦄","🍕","💎"]);
-memoryCards=icons.concat(icons);
-memoryCards=shuffle(memoryCards);
-firstPick=null;secondPick=null;memoryLock=false;
-
-document.getElementById("board").innerHTML=`
-<h2>🧠 Find all the matching pairs!</h2>
-<div class="memoryGrid" id="memoryGrid"></div>`;
-
-drawMemory();
-clock(30);
-}
-
-function drawMemory(){
-document.getElementById("memoryGrid").innerHTML=memoryCards.map((x,i)=>
-`<button class="mem" onclick="flip(${i})">❓</button>`).join("");
-}
-
-let shown=[];
-function flip(i){
-if(memoryLock||shown.includes(i))return;
-
-document.querySelectorAll(".mem")[i].textContent=memoryCards[i];
-
-if(firstPick===null){
-firstPick=i;
-}else{
-secondPick=i;
-memoryLock=true;
-
-if(memoryCards[firstPick]===memoryCards[secondPick]){
-shown.push(firstPick,secondPick);
-firstPick=null;secondPick=null;memoryLock=false;
-score+=150;streak++;
-if(shown.length===memoryCards.length){
-round++;
-setTimeout(next,500);
-}
-}else{
-setTimeout(()=>{
-document.querySelectorAll(".mem")[firstPick].textContent="❓";
-document.querySelectorAll(".mem")[secondPick].textContent="❓";
-firstPick=null;secondPick=null;memoryLock=false;
-wrong();
-},600);
-}
-}
-}
-
-/* 4 — OBJECT SWITCH
-   DRAG/CHOOSE LOCATION STYLE */
-
-function switchGame(){
-let sets=[
-["🧸","BEDROOM","🛏️","KITCHEN","🍳"],
-["🍕","KITCHEN","🍳","BEDROOM","🛏️"],
-["⚽","PARK","🌳","LIBRARY","📚"],
-["📚","LIBRARY","📖","PARK","🌳"],
-["🧪","LAB","🔬","BEACH","🏖️"]
-];
-let s=sets[Math.floor(Math.random()*sets.length)];
-answer=s[1];
-
-document.getElementById("board").innerHTML=`
-<h2>🔄 Where should this object go?</h2>
-<div class="big">${s[0]}</div>
-<div class="choices">
-<button class="choice" onclick="pick('${s[1]}')">${s[2]}<br>${s[1]}</button>
-<button class="choice" onclick="pick('${s[3]}')">${s[4]}<br>${s[3]}</button>
-</div>`;
-clock(15);
-}
-
-/* 5 — BLINK & CATCH
-   QUICK REACTION */
-
-function blink(){
-let things=["🦄","🍕","🚀","🐸","💎","🎈","🌸","🐼"];
-answer=things[Math.floor(Math.random()*things.length)];
-
-document.getElementById("board").innerHTML=`
-<h2>⚡ BLINK & CATCH</h2>
-<p>Wait for it...</p>
-<div id="flash" class="big">👀</div>`;
-
-clearInterval(timer);
-
-setTimeout(()=>{
-document.getElementById("flash").textContent=answer;
-
-setTimeout(()=>{
-document.getElementById("flash").textContent="❓";
-document.getElementById("board").innerHTML+=`
-<div class="choices">
-${shuffle(things.slice()).map(x=>
-`<button class="choice" onclick="pick('${x}')">${x}</button>`).join("")}
-</div>`;
-clock(6);
-},500);
-},700);
-}
-
-/* 6 — WHO LIVES HERE
-   CHARACTER + HOME */
-
-function livesGame(){
-let sets=[
-["🧑‍🚒","🔥","🏠","🚒","firefighter"],
-["👩‍🍳","🍳","🏪","🍴","chef"],
-["🧑‍🚀","🚀","🏫","🌌","astronaut"],
-["👨‍⚕️","💉","🏥","🏖️","doctor"],
-["🧑‍🌾","🌾","🏙️","🚜","farmer"]
-];
-let s=sets[Math.floor(Math.random()*sets.length)];
-answer=s[4];
-
-document.getElementById("board").innerHTML=`
-<h2>🏠 Where does this person work?</h2>
-<div class="big">${s[0]} ${s[1]}</div>
-<div class="choices">
-<button class="choice" onclick="pick('${s[4]}')">${s[3]}<br>${s[4]}</button>
-<button class="choice" onclick="pick('wrong')">${s[2]}<br>City</button>
-</div>`;
-clock(14);
-}
-
-/* 7 — SECRET OBJECT
-   MULTI CLUE */
-
-function secret(){
-let sets=[
-["round","kick","goal","⚽",["⚽","🍎","📚","🌸"]],
-["cold","sweet","cone","🍦",["🍦","🚗","🐶","📱"]],
-["night","sky","shines","🌙",["☀️","🌙","🍕","🎁"]],
-["fly","sky","people","✈️",["🐸","🍎","✈️","🧸"]],
-["time","numbers","tick","⏰",["🍩","🎈","⏰","⚽"]]
-];
-let s=sets[Math.floor(Math.random()*sets.length)];
-answer=s[3];
-
-document.getElementById("board").innerHTML=`
-<h2>🔐 The Secret Object</h2>
-<p>Clue 1: ${s[0]}</p>
-<p>Clue 2: ${s[1]}</p>
-<p>Clue 3: ${s[2]}</p>
-<div class="choices">
-${shuffle(s[4].slice()).map(x=>
-`<button class="choice" onclick="pick('${x}')">${x}</button>`).join("")}
-</div>`;
-clock(18);
-}
-
-/* 8 — SAME THING DIFFERENT WORLD
-   CONNECTION PUZZLE */
-
-function world(){
-let sets=[
-["🌊","💧","water"],
-["🌙","⭐","space"],
-["🍎","🍓","fruit"],
-["🐶","🐱","pets"],
-["🚗","🚲","transport"],
-["🌹","🌸","flowers"]
-];
-let s=sets[Math.floor(Math.random()*sets.length)];
-answer=s[2];
-
-let options=["water","space","fruit","pets","transport","flowers"];
-
-document.getElementById("board").innerHTML=`
-<h2>🌎 What connects these?</h2>
-<div class="big">${s[0]} ↔️ ${s[1]}</div>
-<div class="choices">
-${shuffle(options.slice()).map(x=>
-`<button class="choice" onclick="pick('${x}')">${x}</button>`).join("")}
-</div>`;
-clock(15);
-}
-
-/* ANSWERS */
-
-function pick(x){
-if(locked)return;
-locked=true;
-clearInterval(timer);
-
-if(String(x)===String(answer)){
-score+=100+streak*25;
-streak++;
-round++;
-setTimeout(next,450);
-}else{
-wrong();
-}
-}
-
-function wrong(){
-if(!locked)locked=true;
-clearInterval(timer);
-lives--;
-streak=0;
-round++;
-setTimeout(next,450);
-}
-
-/* END */
-
-function end(){
-clearInterval(timer);
-
-let earned=Math.max(10,Math.floor(score/12));
-p().points+=earned;
-
-if(score>(p().best[type]||0))p().best[type]=score;
-
-save();
-
-document.getElementById("final").textContent=score+" ⭐";
-document.getElementById("earned").textContent=
-"⭐ You earned "+earned+" Star Points!";
-document.getElementById("best").textContent=
-"🏆 Best score: "+p().best[type];
-
-show("result");
-}
-
-function leave(){
-clearInterval(timer);
-show("library");
-}
-
-/* SHUFFLE */
-
-function shuffle(a){
-for(let i=a.length-1;i>0;i--){
-let j=Math.floor(Math.random()*(i+1));
-[a[i],a[j]]=[a[j],a[i]];
-}
-return a;
-}
-
-/* START */
-
-starterDraw();
-
-if(current&&players[current])show("library");
-else show("setup");
 
 </script>
+
 </body>
 </html>
