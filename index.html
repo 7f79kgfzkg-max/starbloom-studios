@@ -1,6 +1,1134 @@
-🌸 Star Bloom Studios 🌸
-Games • Stars • Avatars • Magic
-✨ Welcome!
-Create your player profile.
-Choose a starter avatar
-🌸 Enter Star Bloom
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<title>🌸 Star Bloom Studios</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  min-height:100vh;
+  color:#fff;
+  background:linear-gradient(135deg,#17144a,#39277d,#8c4db8);
+}
+button{
+  border:0;
+  border-radius:18px;
+  padding:14px 20px;
+  font-size:17px;
+  font-weight:bold;
+  cursor:pointer;
+}
+button:active{transform:scale(.96)}
+.hidden{display:none!important}
+
+.screen{
+  min-height:100vh;
+  padding:20px;
+  position:relative;
+  overflow:hidden;
+}
+.container{
+  max-width:1000px;
+  margin:auto;
+}
+.card{
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.25);
+  backdrop-filter:blur(12px);
+  border-radius:28px;
+  padding:22px;
+  box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+h1,h2,h3{margin-top:0}
+.center{text-align:center}
+
+.logo{
+  font-size:42px;
+  font-weight:900;
+  text-align:center;
+  margin:20px 0 5px;
+}
+.subtitle{
+  text-align:center;
+  opacity:.85;
+  margin-bottom:25px;
+}
+
+input{
+  width:100%;
+  padding:16px;
+  border-radius:16px;
+  border:0;
+  font-size:18px;
+  margin:10px 0;
+}
+
+.primary{
+  background:#fff;
+  color:#5b3fa8;
+}
+.pink{background:#ff7eb6;color:#fff}
+.blue{background:#62c7ff;color:#fff}
+.purple{background:#9d7cff;color:#fff}
+.gold{background:#ffd45a;color:#5d4200}
+.dark{background:rgba(0,0,0,.3);color:#fff}
+
+.avatar-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+}
+.avatar{
+  padding:15px 5px;
+  border-radius:20px;
+  background:rgba(255,255,255,.12);
+  text-align:center;
+  font-size:40px;
+  cursor:pointer;
+}
+.avatar.selected{
+  outline:4px solid #fff;
+  background:rgba(255,255,255,.25);
+}
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  margin-bottom:20px;
+  flex-wrap:wrap;
+}
+.points{
+  background:rgba(0,0,0,.25);
+  padding:10px 15px;
+  border-radius:16px;
+  font-weight:bold;
+}
+
+.game-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:18px;
+}
+.game-card{
+  padding:20px;
+  border-radius:25px;
+  background:rgba(255,255,255,.13);
+  border:1px solid rgba(255,255,255,.2);
+}
+.game-icon{font-size:48px}
+.game-card h3{margin:8px 0}
+.game-card p{opacity:.8;min-height:42px}
+
+.choice-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:14px;
+  margin-top:20px;
+}
+.choice{
+  min-height:90px;
+  font-size:40px;
+  background:rgba(255,255,255,.15);
+  color:white;
+}
+.choice:hover{background:rgba(255,255,255,.25)}
+
+.scene{
+  background:rgba(0,0,0,.18);
+  border-radius:25px;
+  padding:25px;
+  font-size:65px;
+  text-align:center;
+  min-height:150px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:15px;
+}
+
+.hud{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin:15px 0;
+}
+.hud span{
+  background:rgba(0,0,0,.25);
+  padding:9px 13px;
+  border-radius:14px;
+}
+
+.shop-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:15px;
+}
+.shop-item{
+  background:rgba(255,255,255,.13);
+  padding:18px;
+  border-radius:22px;
+}
+.shop-icon{font-size:45px}
+.shop-item button{margin-top:10px;width:100%}
+
+.profile-avatar{
+  font-size:80px;
+  text-align:center;
+}
+
+.wallpaper-blue{background:linear-gradient(135deg,#172b75,#248cc7,#76ddff)}
+.wallpaper-purple{background:linear-gradient(135deg,#32115e,#733fbb,#c78cff)}
+.wallpaper-pink{background:linear-gradient(135deg,#7b164d,#d54d91,#ff9cc7)}
+.wallpaper-rainbow{background:linear-gradient(135deg,#ff7c9c,#ffcc70,#7ee8fa,#a88cff)}
+
+.sparkles{
+  pointer-events:none;
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:100;
+}
+.sparkle{
+  position:absolute;
+  animation:float 4s linear infinite;
+  opacity:.8;
+}
+@keyframes float{
+  from{transform:translateY(110vh) rotate(0deg)}
+  to{transform:translateY(-20vh) rotate(360deg)}
+}
+
+.result-score{
+  font-size:55px;
+  font-weight:900;
+}
+
+@media(max-width:650px){
+  .game-grid,.shop-grid{grid-template-columns:1fr}
+  .avatar-grid{grid-template-columns:repeat(4,1fr)}
+  .choice-grid{grid-template-columns:repeat(2,1fr)}
+  .logo{font-size:32px}
+  .game-card{padding:16px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="sparkles" class="sparkles"></div>
+
+<!-- SETUP -->
+<section id="setup" class="screen">
+<div class="container">
+  <div class="logo">🌸 Star Bloom Studios 🌸</div>
+  <div class="subtitle">Games • Stars • Avatars • Magic</div>
+
+  <div class="card">
+    <h2>✨ Welcome!</h2>
+    <p>Create your player profile.</p>
+
+    <input id="nameInput" placeholder="Enter your name">
+
+    <h3>Choose a starter avatar</h3>
+
+    <div class="avatar-grid" id="starterAvatars"></div>
+
+    <br>
+    <button class="primary" onclick="createPlayer()">🌸 Enter Star Bloom</button>
+  </div>
+</div>
+</section>
+
+<!-- LIBRARY -->
+<section id="library" class="screen hidden">
+<div class="container">
+
+  <div class="topbar">
+    <button class="dark" onclick="show('profile')">👤 Profile</button>
+    <div class="points">⭐ <span id="pointsTop">0</span></div>
+    <button class="gold" onclick="show('shop')">🛍️ Shop</button>
+  </div>
+
+  <div class="logo">🌸 Star Bloom Studios</div>
+  <div class="subtitle">Choose a game and start your adventure!</div>
+
+  <div class="game-grid" id="gameGrid"></div>
+
+</div>
+</section>
+
+<!-- PROFILE -->
+<section id="profile" class="screen hidden">
+<div class="container">
+  <div class="topbar">
+    <button class="dark" onclick="show('library')">← Games</button>
+    <button class="gold" onclick="show('avatarShop')">🦄 Avatar Shop</button>
+  </div>
+
+  <div class="card center">
+    <div class="profile-avatar" id="profileAvatar"></div>
+    <h2 id="profileName"></h2>
+    <h3>⭐ <span id="profilePoints"></span> Star Points</h3>
+  </div>
+
+  <br>
+
+  <div class="card">
+    <h2>🏆 Best Scores</h2>
+    <div id="bestScores"></div>
+  </div>
+</div>
+</section>
+
+<!-- SHOP -->
+<section id="shop" class="screen hidden">
+<div class="container">
+  <div class="topbar">
+    <button class="dark" onclick="show('library')">← Games</button>
+    <div class="points">⭐ <span id="shopPoints">0</span></div>
+  </div>
+
+  <h1>🛍️ Star Bloom Shop</h1>
+  <p>Spend your Star Points on magical items!</p>
+
+  <div class="shop-grid" id="shopGrid"></div>
+</div>
+</section>
+
+<!-- AVATAR SHOP -->
+<section id="avatarShop" class="screen hidden">
+<div class="container">
+  <div class="topbar">
+    <button class="dark" onclick="show('profile')">← Profile</button>
+    <div class="points">⭐ <span id="avatarPoints">0</span></div>
+  </div>
+
+  <h1>🦄 Avatar Shop</h1>
+  <p>Buy new avatars and equip them!</p>
+
+  <div class="shop-grid" id="avatarShopGrid"></div>
+</div>
+</section>
+
+<!-- GAME -->
+<section id="game" class="screen hidden">
+<div class="container">
+  <div class="topbar">
+    <button class="dark" onclick="leaveGame()">← Leave</button>
+    <div class="points">⭐ <span id="gamePoints">0</span></div>
+  </div>
+
+  <div class="card center">
+    <h2 id="gameTitle"></h2>
+
+    <div class="hud">
+      <span>⏱️ <b id="timer">20</b></span>
+      <span>❤️ <b id="lives">3</b></span>
+      <span>⭐ <b id="score">0</b></span>
+      <span>🔥 <b id="streak">0</b></span>
+      <span>Round <b id="round">1</b>/10</span>
+    </div>
+
+    <div id="gameContent"></div>
+  </div>
+</div>
+</section>
+
+<!-- RESULT -->
+<section id="result" class="screen hidden">
+<div class="container">
+  <div class="card center">
+    <h1>🎉 Round Complete!</h1>
+    <div class="result-score" id="finalScore"></div>
+    <p id="earnedText"></p>
+    <p id="bestText"></p>
+
+    <button class="primary" onclick="show('library')">🌸 Back to Games</button>
+  </div>
+</div>
+</section>
+
+<script>
+/* =========================
+   DATA
+========================= */
+
+const starterAvatars=["🐰","🐱","🐻","🐥"];
+
+const paidAvatars=[
+ {id:"fox",e:"🦊",name:"Fox",price:100},
+ {id:"panda",e:"🐼",name:"Panda",price:200},
+ {id:"frog",e:"🐸",name:"Frog",price:300},
+ {id:"fairy",e:"🧚",name:"Fairy",price:500},
+ {id:"unicorn",e:"🦄",name:"Unicorn",price:750},
+ {id:"dragon",e:"🐉",name:"Dragon",price:1000},
+ {id:"royal",e:"👑",name:"Royal",price:2000}
+];
+
+const shopItems=[
+ {id:"blue",e:"💙",name:"Blue Dream Wallpaper",price:250,type:"wall"},
+ {id:"purple",e:"💜",name:"Purple Galaxy Wallpaper",price:250,type:"wall"},
+ {id:"pink",e:"💗",name:"Pink Bloom Wallpaper",price:250,type:"wall"},
+ {id:"rainbow",e:"🌈",name:"Random Wallpaper",price:400,type:"wall"},
+ {id:"sparkle",e:"✨",name:"Sparkle Effect",price:500,type:"sparkle"},
+ {id:"badge",e:"🏆",name:"Golden Badge",price:1000,type:"badge"},
+ {id:"special",e:"🌟",name:"Special Theme",price:2000,type:"special"}
+];
+
+const games=[
+ {id:"spot",icon:"🔎",title:"Spot the Correct",desc:"Find the object that appears in both scenes."},
+ {id:"glitch",icon:"👀",title:"Reality Glitch",desc:"Find the strange or impossible object."},
+ {id:"memory",icon:"🧠",title:"Memory Mess",desc:"Remember the scene and find what changed."},
+ {id:"switch",icon:"🔄",title:"Object Switch",desc:"Figure out where the object belongs."},
+ {id:"blink",icon:"⚡",title:"Blink & Catch",desc:"Remember what you saw before it disappeared."},
+ {id:"lives",icon:"🏠",title:"Who Lives Here?",desc:"Match clues to the correct place."},
+ {id:"secret",icon:"🔐",title:"The Secret Object",desc:"Use clues to discover the object."},
+ {id:"world",icon:"🌎",title:"Same Thing, Different World",desc:"Find the connection between two scenes."}
+];
+
+/* =========================
+   PLAYER SYSTEM
+========================= */
+
+let players=JSON.parse(localStorage.getItem("starBloomPlayers")||"{}");
+let current=localStorage.getItem("starBloomCurrent")||"";
+
+function save(){
+ localStorage.setItem("starBloomPlayers",JSON.stringify(players));
+ localStorage.setItem("starBloomCurrent",current);
+}
+
+function player(){
+ return players[current];
+}
+
+function createPlayer(){
+ const name=document.getElementById("nameInput").value.trim();
+
+ if(!name){
+   alert("Please enter your name!");
+   return;
+ }
+
+ if(!selectedStarter){
+   alert("Choose an avatar!");
+   return;
+ }
+
+ if(!players[name]){
+   players[name]={
+     name:name,
+     avatar:selectedStarter,
+     points:0,
+     ownedAvatars:starterAvatars.slice(),
+     ownedItems:[],
+     wall:"blue",
+     sparkle:false,
+     best:{}
+   };
+ }
+
+ current=name;
+ save();
+ applyTheme();
+ show("library");
+}
+
+let selectedStarter="🐰";
+
+function renderStarters(){
+ const box=document.getElementById("starterAvatars");
+ box.innerHTML="";
+
+ starterAvatars.forEach(a=>{
+   const d=document.createElement("div");
+   d.className="avatar"+(a===selectedStarter?" selected":"");
+   d.textContent=a;
+   d.onclick=()=>{
+     selectedStarter=a;
+     renderStarters();
+   };
+   box.appendChild(d);
+ });
+}
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function show(id){
+ document.querySelectorAll(".screen").forEach(x=>x.classList.add("hidden"));
+ document.getElementById(id).classList.remove("hidden");
+
+ if(id==="library")renderLibrary();
+ if(id==="profile")renderProfile();
+ if(id==="shop")renderShop();
+ if(id==="avatarShop")renderAvatarShop();
+
+ applyTheme();
+}
+
+function renderLibrary(){
+ document.getElementById("pointsTop").textContent=player().points;
+
+ const box=document.getElementById("gameGrid");
+ box.innerHTML="";
+
+ games.forEach(g=>{
+   const d=document.createElement("div");
+   d.className="game-card";
+   d.innerHTML=`
+    <div class="game-icon">${g.icon}</div>
+    <h3>${g.title}</h3>
+    <p>${g.desc}</p>
+    <button class="primary" onclick="startGame('${g.id}')">▶ PLAY</button>
+   `;
+   box.appendChild(d);
+ });
+}
+
+/* =========================
+   PROFILE
+========================= */
+
+function renderProfile(){
+ const p=player();
+
+ document.getElementById("profileAvatar").textContent=p.avatar;
+ document.getElementById("profileName").textContent=p.name;
+ document.getElementById("profilePoints").textContent=p.points;
+
+ let html="";
+
+ games.forEach(g=>{
+   html+=`<p>🎮 ${g.title}: <b>${p.best[g.id]||0}</b></p>`;
+ });
+
+ document.getElementById("bestScores").innerHTML=html;
+}
+
+/* =========================
+   SHOP
+========================= */
+
+function renderShop(){
+ const p=player();
+
+ document.getElementById("shopPoints").textContent=p.points;
+
+ const box=document.getElementById("shopGrid");
+ box.innerHTML="";
+
+ shopItems.forEach(item=>{
+   const owned=p.ownedItems.includes(item.id);
+
+   let action="";
+
+   if(item.type==="wall"){
+     action=owned
+       ? `<button class="blue" onclick="equipWall('${item.id}')">🎨 EQUIP</button>`
+       : `<button class="primary" onclick="buyItem('${item.id}')">⭐ ${item.price}</button>`;
+   }else if(item.type==="sparkle"){
+     action=p.sparkle
+       ? `<button class="blue" onclick="toggleSparkle()">✨ EQUIP/REMOVE</button>`
+       : `<button class="primary" onclick="buyItem('${item.id}')">⭐ ${item.price}</button>`;
+   }else{
+     action=owned
+       ? `<button class="blue">✓ OWNED</button>`
+       : `<button class="primary" onclick="buyItem('${item.id}')">⭐ ${item.price}</button>`;
+   }
+
+   const d=document.createElement("div");
+   d.className="shop-item";
+   d.innerHTML=`
+    <div class="shop-icon">${item.e}</div>
+    <h3>${item.name}</h3>
+    <p>${owned?"Owned":"Price: ⭐ "+item.price}</p>
+    ${action}
+   `;
+   box.appendChild(d);
+ });
+}
+
+function buyItem(id){
+ const p=player();
+ const item=shopItems.find(x=>x.id===id);
+
+ if(p.ownedItems.includes(id)){
+   alert("You already own this!");
+   return;
+ }
+
+ if(p.points<item.price){
+   alert("You need more Star Points!");
+   return;
+ }
+
+ p.points-=item.price;
+ p.ownedItems.push(id);
+
+ if(item.type==="sparkle")p.sparkle=true;
+
+ save();
+ applyTheme();
+ renderShop();
+ alert("✨ Purchased!");
+}
+
+function equipWall(id){
+ player().wall=id;
+ save();
+ applyTheme();
+ renderShop();
+}
+
+function toggleSparkle(){
+ player().sparkle=!player().sparkle;
+ save();
+ applyTheme();
+}
+
+/* =========================
+   AVATAR SHOP
+========================= */
+
+function renderAvatarShop(){
+ const p=player();
+
+ document.getElementById("avatarPoints").textContent=p.points;
+
+ const box=document.getElementById("avatarShopGrid");
+ box.innerHTML="";
+
+ paidAvatars.forEach(a=>{
+   const owned=p.ownedAvatars.includes(a.e);
+
+   const d=document.createElement("div");
+   d.className="shop-item";
+
+   d.innerHTML=`
+    <div class="shop-icon">${a.e}</div>
+    <h3>${a.name}</h3>
+    <p>${owned?"Owned":"⭐ "+a.price}</p>
+    ${
+      owned
+      ? `<button class="blue" onclick="equipAvatar('${a.e}')">USE AVATAR</button>`
+      : `<button class="primary" onclick="buyAvatar('${a.id}')">⭐ ${a.price}</button>`
+    }
+   `;
+
+   box.appendChild(d);
+ });
+}
+
+function buyAvatar(id){
+ const p=player();
+ const a=paidAvatars.find(x=>x.id===id);
+
+ if(p.points<a.price){
+   alert("Not enough Star Points!");
+   return;
+ }
+
+ p.points-=a.price;
+ p.ownedAvatars.push(a.e);
+ p.avatar=a.e;
+
+ save();
+ renderAvatarShop();
+ alert("🦄 New avatar unlocked!");
+}
+
+function equipAvatar(a){
+ player().avatar=a;
+ save();
+ renderAvatarShop();
+}
+
+/* =========================
+   THEMES
+========================= */
+
+function applyTheme(){
+ const p=player();
+ if(!p)return;
+
+ document.body.className="";
+
+ if(p.wall==="blue")document.body.classList.add("wallpaper-blue");
+ if(p.wall==="purple")document.body.classList.add("wallpaper-purple");
+ if(p.wall==="pink")document.body.classList.add("wallpaper-pink");
+ if(p.wall==="rainbow")document.body.classList.add("wallpaper-rainbow");
+
+ const box=document.getElementById("sparkles");
+ box.innerHTML="";
+
+ if(p.sparkle){
+   for(let i=0;i<18;i++){
+     const s=document.createElement("div");
+     s.className="sparkle";
+     s.textContent="✨";
+     s.style.left=Math.random()*100+"%";
+     s.style.animationDelay=(Math.random()*4)+"s";
+     s.style.fontSize=(12+Math.random()*20)+"px";
+     box.appendChild(s);
+   }
+ }
+}
+
+/* =========================
+   GAME ENGINE
+========================= */
+
+let gameType="";
+let round=1;
+let score=0;
+let lives=3;
+let streak=0;
+let timer=20;
+let interval=null;
+let currentAnswer=null;
+let memoryAnswer=null;
+
+function startGame(type){
+ gameType=type;
+ round=1;
+ score=0;
+ lives=3;
+ streak=0;
+
+ document.getElementById("gameTitle").textContent=
+   games.find(g=>g.id===type).title;
+
+ show("game");
+ nextRound();
+}
+
+function startTimer(seconds){
+ clearInterval(interval);
+
+ timer=seconds;
+ document.getElementById("timer").textContent=timer;
+
+ interval=setInterval(()=>{
+   timer--;
+   document.getElementById("timer").textContent=timer;
+
+   if(timer<=0){
+     clearInterval(interval);
+     wrongAnswer();
+   }
+ },1000);
+}
+
+function updateHUD(){
+ document.getElementById("score").textContent=score;
+ document.getElementById("lives").textContent=lives;
+ document.getElementById("streak").textContent=streak;
+ document.getElementById("round").textContent=round;
+ document.getElementById("gamePoints").textContent=player().points;
+}
+
+function nextRound(){
+ updateHUD();
+
+ if(round>10 || lives<=0){
+   endGame();
+   return;
+ }
+
+ if(gameType==="spot")spotGame();
+ if(gameType==="glitch")glitchGame();
+ if(gameType==="memory")memoryGame();
+ if(gameType==="switch")switchGame();
+ if(gameType==="blink")blinkGame();
+ if(gameType==="lives")livesGame();
+ if(gameType==="secret")secretGame();
+ if(gameType==="world")worldGame();
+}
+
+/* =========================
+   1 SPOT
+========================= */
+
+const spotObjects=[
+ ["🍎","🍎","🍌","🍇"],
+ ["⭐","🌙","⭐","☀️"],
+ ["🐶","🐱","🐶","🐰"],
+ ["🚗","🚌","🚕","🚗"],
+ ["🌸","🌹","🌷","🌸"],
+ ["🍕","🍔","🍟","🍕"],
+ ["⚽","🏀","⚾","⚽"],
+ ["🎈","🎁","🎈","🎂"],
+ ["🐼","🐨","🐼","🦊"],
+ ["☕","🥤","🧃","☕"]
+];
+
+function spotGame(){
+ const arr=spotObjects[Math.floor(Math.random()*spotObjects.length)];
+ const counts={};
+
+ arr.forEach(x=>counts[x]=(counts[x]||0)+1);
+ currentAnswer=Object.keys(counts).find(x=>counts[x]===2);
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>Which object appears twice?</h2>
+  <div class="scene">${arr.join(" ")}</div>
+  <div class="choice-grid">
+    ${shuffle([...new Set(arr)]).map(x=>`
+      <button class="choice" onclick="answer('${x}')">${x}</button>
+    `).join("")}
+  </div>
+ `;
+
+ startTimer(20);
+}
+
+/* =========================
+   2 GLITCH
+========================= */
+
+const glitchRounds=[
+ ["🐟","🐟","🐟","🐟","🚗","🐟"],
+ ["🍎","🍎","🍎","🍎","🌙","🍎"],
+ ["🐶","🐶","🐶","🐶","🍕","🐶"],
+ ["🌸","🌸","🌸","🌸","🚀","🌸"],
+ ["⚽","⚽","⚽","🍉","⚽","⚽"],
+ ["☀️","☀️","☀️","❄️","☀️","☀️"],
+ ["🐱","🐱","🐱","🐱","🐱","🛸"]
+];
+
+function glitchGame(){
+ const arr=glitchRounds[Math.floor(Math.random()*glitchRounds.length)];
+ currentAnswer=arr.find((x,i)=>arr.indexOf(x)===i && arr.filter(y=>y===x).length===1);
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>👀 Find the impossible object!</h2>
+  <div class="scene">${arr.join(" ")}</div>
+  <div class="choice-grid">
+   ${shuffle([...new Set(arr)]).map(x=>`
+    <button class="choice" onclick="answer('${x}')">${x}</button>
+   `).join("")}
+  </div>
+ `;
+
+ startTimer(15);
+}
+
+/* =========================
+   3 MEMORY
+========================= */
+
+const memoryScenes=[
+ ["🍎","📚","🧸","🌸","⭐"],
+ ["🐶","🎈","🍕","🌈","📱"],
+ ["🚗","🌳","⚽","🍦","☀️"],
+ ["🐱","🎁","🌙","🍪","🎵"]
+];
+
+function memoryGame(){
+ const original=[...memoryScenes[Math.floor(Math.random()*memoryScenes.length)]];
+ const index=Math.floor(Math.random()*original.length);
+
+ memoryAnswer=original[index];
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>🧠 Remember this!</h2>
+  <div class="scene">${original.join(" ")}</div>
+  <p>Memorize the scene...</p>
+ `;
+
+ clearInterval(interval);
+
+ setTimeout(()=>{
+   const changed=[...original];
+   const replacements=["🍩","🚀","🐸","💎","🎸","🦄"];
+   let replacement=replacements[Math.floor(Math.random()*replacements.length)];
+
+   while(replacement===memoryAnswer){
+     replacement=replacements[Math.floor(Math.random()*replacements.length)];
+   }
+
+   changed[index]=replacement;
+
+   currentAnswer=memoryAnswer;
+
+   document.getElementById("gameContent").innerHTML=`
+    <h2>🔍 What disappeared?</h2>
+    <div class="scene">${changed.join(" ")}</div>
+    <div class="choice-grid">
+     ${shuffle([...new Set([...original,...changed])]).map(x=>`
+      <button class="choice" onclick="answer('${x}')">${x}</button>
+     `).join("")}
+    </div>
+   `;
+
+   startTimer(15);
+ },2500);
+}
+
+/* =========================
+   4 OBJECT SWITCH
+========================= */
+
+const switchRounds=[
+ ["🍎","🍎 belongs in the kitchen","🏠"],
+ ["⚽","⚽ belongs at the playground","🏞️"],
+ ["📚","📚 belongs in the library","📖"],
+ ["🛏️","🛏️ belongs in the bedroom","🛌"],
+ ["🍦","🍦 belongs in the ice cream shop","🍨"]
+];
+
+function switchGame(){
+ const r=switchRounds[Math.floor(Math.random()*switchRounds.length)];
+
+ currentAnswer="A";
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>🔄 Where does ${r[0]} belong?</h2>
+  <div class="choice-grid">
+   <button class="choice" onclick="answer('A')">${r[2]}<br>A</button>
+   <button class="choice" onclick="answer('B')">🏙️<br>B</button>
+  </div>
+  <p>${r[1]}</p>
+ `;
+
+ startTimer(15);
+}
+
+/* =========================
+   5 BLINK
+========================= */
+
+const blinkObjects=["🦄","🍕","🚀","🐸","💎","🎈","🌸","🐼"];
+
+function blinkGame(){
+ currentAnswer=blinkObjects[Math.floor(Math.random()*blinkObjects.length)];
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>⚡ Blink & Catch!</h2>
+  <p>Watch carefully!</p>
+  <div class="scene" id="blinkScene">${currentAnswer}</div>
+ `;
+
+ clearInterval(interval);
+
+ setTimeout(()=>{
+   document.getElementById("blinkScene").textContent="❓";
+
+   document.getElementById("gameContent").innerHTML+=`
+    <div class="choice-grid">
+     ${shuffle(blinkObjects).map(x=>`
+      <button class="choice" onclick="answer('${x}')">${x}</button>
+     `).join("")}
+    </div>
+   `;
+
+   startTimer(10);
+ },900);
+}
+
+/* =========================
+   6 WHO LIVES HERE
+========================= */
+
+const livesRounds=[
+ ["I have a steering wheel and four wheels.","🚗","🏠","🏥","🚗"],
+ ["I have many books.","🏫","📚","🍕","🏖️"],
+ ["I have doctors and nurses.","🏥","🏰","🏠","🎡"],
+ ["I have slides and swings.","🏞️","🏥","🏫","🚀"],
+ ["I have beds and pillows.","🛏️","🏪","🏟️","🏠"]
+];
+
+function livesGame(){
+ const r=livesRounds[Math.floor(Math.random()*livesRounds.length)];
+
+ currentAnswer=r[4];
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>🏠 Who lives here?</h2>
+  <p>${r[0]}</p>
+  <div class="choice-grid">
+   ${shuffle([r[1],r[2],r[3],r[4]]).map(x=>`
+    <button class="choice" onclick="answer('${x}')">${x}</button>
+   `).join("")}
+  </div>
+ `;
+
+ startTimer(15);
+}
+
+/* =========================
+   7 SECRET OBJECT
+========================= */
+
+const secretRounds=[
+ ["I am round, you can kick me, and I am used in sports.","⚽",["⚽","🍎","📚","🌸"]],
+ ["I am sweet and cold.","🍦",["🚗","🍦","🐶","📱"]],
+ ["I shine in the night sky.","🌙",["☀️","🌙","🍕","🎁"]],
+ ["I can fly people through the sky.","✈️",["🐸","🍎","✈️","🧸"]],
+ ["I am used to tell time.","⏰",["🍩","🎈","⏰","⚽"]]
+];
+
+function secretGame(){
+ const r=secretRounds[Math.floor(Math.random()*secretRounds.length)];
+
+ currentAnswer=r[1];
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>🔐 The Secret Object</h2>
+  <p>${r[0]}</p>
+  <div class="choice-grid">
+   ${shuffle(r[2]).map(x=>`
+    <button class="choice" onclick="answer('${x}')">${x}</button>
+   `).join("")}
+  </div>
+ `;
+
+ startTimer(18);
+}
+
+/* =========================
+   8 SAME THING DIFFERENT WORLD
+========================= */
+
+const worldRounds=[
+ ["🌊","💧","water"],
+ ["🌙","⭐","space"],
+ ["🍎","🍏","fruit"],
+ ["🐶","🐱","pets"],
+ ["🚗","🚌","transport"],
+ ["🌸","🌹","flowers"]
+];
+
+function worldGame(){
+ const r=worldRounds[Math.floor(Math.random()*worldRounds.length)];
+
+ const options=["water","space","fruit","pets","transport","flowers"];
+
+ currentAnswer=r[2];
+
+ document.getElementById("gameContent").innerHTML=`
+  <h2>🌎 Same Thing, Different World</h2>
+  <div class="scene">${r[0]} ↔️ ${r[1]}</div>
+  <p>What connects them?</p>
+
+  <div class="choice-grid">
+   ${shuffle(options).map(x=>`
+    <button class="choice" onclick="answer('${x}')">${x}</button>
+   `).join("")}
+  </div>
+ `;
+
+ startTimer(15);
+}
+
+/* =========================
+   ANSWERS
+========================= */
+
+function answer(value){
+ clearInterval(interval);
+
+ if(String(value)===String(currentAnswer)){
+   correctAnswer();
+ }else{
+   wrongAnswer();
+ }
+}
+
+function correctAnswer(){
+ score+=100+(streak*25);
+ streak++;
+
+ round++;
+
+ updateHUD();
+
+ setTimeout(nextRound,500);
+}
+
+function wrongAnswer(){
+ clearInterval(interval);
+
+ lives--;
+ streak=0;
+ round++;
+
+ updateHUD();
+
+ if(lives<=0){
+   setTimeout(endGame,400);
+ }else{
+   setTimeout(nextRound,500);
+ }
+}
+
+/* =========================
+   END GAME
+========================= */
+
+function endGame(){
+ clearInterval(interval);
+
+ const earned=Math.max(10,Math.floor(score/10));
+ const p=player();
+
+ p.points+=earned;
+
+ if(!p.best[gameType] || score>p.best[gameType]){
+   p.best[gameType]=score;
+ }
+
+ save();
+
+ document.getElementById("finalScore").textContent=score+" ⭐";
+ document.getElementById("earnedText").textContent=
+   "You earned "+earned+" Star Points!";
+ document.getElementById("bestText").textContent=
+   "🏆 Best score: "+p.best[gameType];
+
+ show("result");
+}
+
+function leaveGame(){
+ clearInterval(interval);
+ show("library");
+}
+
+/* =========================
+   UTILITIES
+========================= */
+
+function shuffle(arr){
+ for(let i=arr.length-1;i>0;i--){
+   const j=Math.floor(Math.random()*(i+1));
+   [arr[i],arr[j]]=[arr[j],arr[i]];
+ }
+ return arr;
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+renderStarters();
+
+if(current && players[current]){
+ applyTheme();
+ show("library");
+}else{
+ show("setup");
+}
+</script>
+
+</body>
+</html>
