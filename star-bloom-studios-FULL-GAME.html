@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#c9b8ff">
+<title>🌸 Star Bloom Studios</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--ink:#45375f;--muted:#776b87;--pink:#ffd8ec;--lav:#ddd5ff;--blue:#d5efff;--mint:#d8f4e4;--yellow:#fff0b9;--purple:#9075e8;--white:#fffdfd}
+body{margin:0;min-height:100vh;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:linear-gradient(135deg,#ffdff0 0%,#ddd7ff 48%,#cceeff 100%);transition:.3s}
+body.theme-purple{background:linear-gradient(135deg,#e3d9ff,#bda9f4,#d8d0ff)}
+body.theme-pink{background:linear-gradient(135deg,#ffd5ea,#ffb9dc,#ffe5f2)}
+body.theme-blue{background:linear-gradient(135deg,#d5f3ff,#b7dcff,#e1f6ff)}
+body.theme-rainbow{background:linear-gradient(120deg,#ffd8eb,#ddd5ff,#c9efff,#d9f5df,#fff0b7)}
+.app{max-width:1100px;margin:auto;padding:16px}
+.logo{text-align:center;font-size:clamp(28px,6vw,50px);font-weight:1000;letter-spacing:-1px}
+.made{text-align:center;font-weight:800;margin:4px 0 18px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:20px}
+.pill,.back,.bigbtn,.smallbtn{border:0;background:#ffffffdf;color:var(--ink);padding:11px 15px;border-radius:18px;font-weight:900;box-shadow:0 8px 22px #51416d20}
+button{font-family:inherit;cursor:pointer}
+.games{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.game-card{min-height:235px;background:#ffffffdf;border:3px solid #fff;border-radius:28px;padding:20px;box-shadow:0 12px 30px #51416d20;display:flex;flex-direction:column;justify-content:space-between;transition:.18s}
+.game-card:hover{transform:translateY(-3px)}
+.game-icon{font-size:50px}.game-card h2{margin:7px 0 4px}.game-card p{color:var(--muted);line-height:1.4}
+.play,.primary{width:100%;border:0;background:var(--purple);color:#fff;padding:14px;border-radius:16px;font-weight:1000;box-shadow:0 7px 15px #725acb35}
+.bottom{display:flex;gap:14px;margin:18px 0}.bigbtn{flex:1;padding:17px}
+.hidden{display:none!important}.screen{text-align:center}.back{margin-bottom:14px}
+.panel{background:#ffffffdf;border:3px solid #fff;border-radius:30px;padding:20px;box-shadow:0 12px 30px #51416d20}
+.hud{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:10px 0 14px}.hud span{background:#fff;padding:9px 12px;border-radius:14px;font-weight:900}
+.arena{background:#fbf9ff;border-radius:25px;padding:14px;min-height:430px;overflow:hidden}.feedback{min-height:34px;padding:8px;font-weight:900;font-size:17px}
+.pop{animation:pop .35s}@keyframes pop{50%{transform:scale(1.1)}}.shake{animation:shake .3s}@keyframes shake{25%{transform:translateX(-7px)}75%{transform:translateX(7px)}}
+.confetti{position:fixed;pointer-events:none;font-size:24px;animation:fall 1s linear forwards;z-index:99}@keyframes fall{to{transform:translateY(100vh) rotate(400deg);opacity:0}}
+/* Scene drawing */
+.scene-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.scene{height:300px;position:relative;border-radius:22px;overflow:hidden;border:3px solid #fff;background:linear-gradient(#bfe9ff 0 57%,#bfe9c9 57%);box-shadow:inset 0 -40px #b5e4c0}
+.scene.night{background:linear-gradient(#7770ae 0 57%,#9bcba5 57%);box-shadow:inset 0 -40px #91bf9a}
+.house{position:absolute;width:50%;height:38%;left:25%;bottom:19%;background:#ffc9dc;border:4px solid #fff;border-radius:12px 12px 4px 4px}.roof{position:absolute;width:0;height:0;border-left:31% solid transparent;border-right:31% solid transparent;border-bottom:55px solid #a98de9;left:19%;top:-55px}.door2{position:absolute;width:25%;height:52%;bottom:0;left:38%;background:#a87969;border:3px solid #fff}.win{position:absolute;width:22%;height:25%;top:25%;background:#bcecff;border:3px solid #fff;border-radius:5px}.win.l{left:10%}.win.r{right:10%}
+.cloud{position:absolute;width:75px;height:26px;background:#fff;border-radius:30px;top:45px}.cloud:before,.cloud:after{content:"";position:absolute;background:#fff;border-radius:50%}.cloud:before{width:30px;height:30px;left:13px;top:-14px}.cloud:after{width:37px;height:37px;left:37px;top:-19px}
+.tapobj{position:absolute;border:0;background:transparent;font-size:38px;z-index:4;touch-action:manipulation}.tapobj:active{transform:scale(.9)}
+/* memory */
+.memory-board{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;max-width:650px;margin:10px auto}.memory-card{aspect-ratio:1;border:0;border-radius:18px;background:linear-gradient(145deg,#947be8,#c8bbff);color:transparent;font-size:34px;box-shadow:0 8px 16px #57467520;transition:.18s;position:relative}.memory-card:before{content:"✦";color:#fff;position:absolute;inset:0;display:grid;place-items:center;font-size:28px}.memory-card.open,.memory-card.matched{background:#fff;color:var(--ink)}.memory-card.open:before,.memory-card.matched:before{display:none}.memory-card.matched{background:var(--mint)}
+/* drag */
+.drag-scene{height:380px;position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(#dff4ff 0 53%,#d4efd4 53%)}.drag-item{position:absolute;font-size:50px;z-index:5;touch-action:none;user-select:none;cursor:grab}.drop-row{position:absolute;left:4%;right:4%;bottom:12px;display:flex;justify-content:space-between;gap:7px}.drop-zone{width:31%;min-height:82px;border:3px dashed #fff;border-radius:18px;background:#ffffff9c;padding:9px;font-weight:900}.drop-zone.good{background:var(--mint);border-style:solid}
+/* glitch */
+.glitch-scene{height:370px;position:relative;border-radius:22px;overflow:hidden;background:linear-gradient(#8176b9 0 55%,#98cda4 55%)}.glitch-weird{position:absolute;border:0;background:transparent;font-size:48px;animation:wobble .3s infinite alternate;touch-action:manipulation}@keyframes wobble{to{transform:rotate(12deg) scale(1.12)}}
+/* blink */
+.blink-scene{height:380px;position:relative;border-radius:22px;background:radial-gradient(circle,#fff 0 3%,#e5dcff 3% 30%,#cbbdf5 31% 100%);overflow:hidden}.blink-target{position:absolute;border:0;background:#fff;border-radius:50%;width:78px;height:78px;font-size:38px;box-shadow:0 7px 20px #51416d35;transform:scale(0);transition:.1s}.blink-target.show{transform:scale(1)}.progress{height:12px;border-radius:20px;background:#eee;margin:10px}.progress i{display:block;height:100%;width:0;background:#9075e8;border-radius:20px}
+/* house clues */
+.house-explore{max-width:650px;margin:auto;position:relative;height:350px;border-radius:25px;background:#ffe8d5;border:5px solid white;overflow:hidden}.room{position:absolute;background:#fff7ef;border:4px solid #d8b9a3;border-radius:12px}.room.bed{left:5%;top:8%;width:40%;height:40%}.room.kitchen{right:5%;top:8%;width:40%;height:40%}.room.living{left:5%;bottom:7%;width:90%;height:42%}.clue{position:absolute;border:0;background:transparent;font-size:36px;z-index:4;animation:float 1.5s infinite alternate}@keyframes float{to{transform:translateY(-5px)}}.resident-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:14px}.resident{border:3px solid white;background:#fff;border-radius:20px;padding:15px 20px;font-size:34px;box-shadow:0 6px 15px #51416d20}.resident small{display:block;font-size:13px;font-weight:900}
+/* secret */
+.clue-card{background:#fff;border-radius:20px;padding:15px;margin:10px auto;max-width:600px;text-align:left}.clue-btn{border:0;background:var(--lav);border-radius:14px;padding:11px 14px;font-weight:900;margin:5px}.secret-options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;max-width:600px;margin:auto}.secret-option{border:0;background:white;border-radius:18px;padding:18px;font-size:34px;font-weight:900}.secret-option small{display:block;font-size:13px}
+/* same world */
+.worlds{display:grid;grid-template-columns:1fr 1fr;gap:12px}.world{height:330px;position:relative;border-radius:22px;overflow:hidden;border:3px solid white}.world.space{background:linear-gradient(#24204f,#4d4a91)}.world.ocean{background:linear-gradient(#7bd9e9,#c9f4f4)}.connection{position:absolute;border:0;background:transparent;font-size:42px;touch-action:manipulation}.connection.selected{outline:5px solid #ffe18c;border-radius:20px}
+/* shop */
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:13px}.shop-item{background:#fff;border-radius:20px;padding:14px}.shop-emoji{font-size:44px}.shop-item button{border:0;background:var(--purple);color:#fff;border-radius:12px;padding:10px 14px;font-weight:900}
+input{width:min(360px,100%);padding:13px;border:2px solid #ddd;border-radius:14px;font-size:17px}
+.profile-avatar{font-size:75px}.score-list{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:600px;margin:15px auto}.score-box{background:#fff;border-radius:15px;padding:12px;font-weight:800}
+.spark{position:fixed;pointer-events:none;z-index:98;animation:spark 1.4s linear infinite}@keyframes spark{from{transform:translateY(0);opacity:1}to{transform:translateY(100vh);opacity:0}}
+@media(max-width:650px){.scene-grid,.worlds{grid-template-columns:1fr}.memory-board{grid-template-columns:repeat(3,1fr)}.bottom{flex-direction:column}.arena{padding:9px}.scene{height:230px}.house-explore{height:300px}.drag-scene{height:340px}.secret-options{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="logo">🌸 Star Bloom Studios 🌸</div>
+<div class="made">made by Reem ✨</div>
+
+<section id="home">
+<div class="topbar">
+<div class="pill">⭐ Star Points: <b id="points">0</b></div>
+<button class="pill" onclick="openProfile()">👤 <span id="playerName">Player</span></button>
+</div>
+<div class="games" id="gameList"></div>
+<div class="bottom">
+<button class="bigbtn" onclick="openShop()">🛍️ Star Bloom Shop</button>
+<button class="bigbtn" onclick="openAvatars()">🧚 Avatar Shop</button>
+</div>
+</section>
+
+<section id="screen" class="screen hidden"></section>
+</div>
+
+<script>
+"use strict";
+
+const games=[
+["🎯","Spot the Correct","Find the object that appears in both scenes."],
+["🌀","Reality Glitch","Find the impossible thing before it moves away."],
+["🧠","Memory Mess","Flip cards, build streaks, and match every pair."],
+["📦","Object Switch","Drag objects into the places where they belong."],
+["👀","Blink & Catch","Tap the target as it flashes around the screen."],
+["🏠","Who Lives Here?","Explore a home, collect clues, then identify the resident."],
+["🔎","The Secret Object","Unlock clues and solve the little mystery."],
+["🌎","Same Thing, Different World","Connect objects that belong together across two worlds."]
+];
+
+let points=Number(localStorage.getItem("sb_points")||0);
+let playerName=localStorage.getItem("sb_name")||"Player";
+let avatar=localStorage.getItem("sb_avatar")||"🐰";
+let wallpaper=localStorage.getItem("sb_wallpaper")||"default";
+let sparkles=localStorage.getItem("sb_sparkles")==="1";
+let best=JSON.parse(localStorage.getItem("sb_best")||"{}");
+let timer=null,extraTimer=null,score=0,lives=3,round=1,streak=0,cleanup=()=>{};
+
+function save(){
+ localStorage.setItem("sb_points",points);
+ localStorage.setItem("sb_name",playerName);
+ localStorage.setItem("sb_avatar",avatar);
+ localStorage.setItem("sb_wallpaper",wallpaper);
+ localStorage.setItem("sb_sparkles",sparkles?"1":"0");
+ localStorage.setItem("sb_best",JSON.stringify(best));
+ applyTheme(); updateTop();
+}
+function applyTheme(){
+ document.body.className="";
+ if(wallpaper!=="default")document.body.classList.add("theme-"+wallpaper);
+ document.querySelectorAll(".spark").forEach(e=>e.remove());
+ if(sparkles)for(let i=0;i<18;i++){let e=document.createElement("div");e.className="spark";e.textContent="✦";e.style.left=Math.random()*100+"%";e.style.top=(-10-Math.random()*80)+"px";e.style.animationDelay=(Math.random()*2)+"s";document.body.appendChild(e)}
+}
+function updateTop(){document.getElementById("points").textContent=points;document.getElementById("playerName").textContent=playerName}
+function renderHome(){
+ document.getElementById("gameList").innerHTML=games.map((g,i)=>`
+ <div class="game-card">
+  <div><div class="game-icon">${g[0]}</div><h2>${g[1]}</h2><p>${g[2]}</p></div>
+  <button class="play" onclick="startGame(${i+1})">PLAY ✨</button>
+ </div>`).join("");
+ updateTop();
+}
+function stopAll(){clearInterval(timer);clearInterval(extraTimer);timer=null;extraTimer=null;cleanup();cleanup=()=>{}}
+function home(){stopAll();document.getElementById("screen").classList.add("hidden");document.getElementById("home").classList.remove("hidden");renderHome()}
+function startGame(n){
+ stopAll();score=0;lives=3;round=1;streak=0;
+ document.getElementById("home").classList.add("hidden");
+ const s=document.getElementById("screen");s.classList.remove("hidden");
+ s.innerHTML=`<button class="back" onclick="home()">← Game Library</button><div class="panel" id="gamePanel"></div>`;
+ window["game"+n]();
+}
+function shell(title,icon,html,time=30){
+ document.getElementById("gamePanel").innerHTML=`
+ <h1>${icon} ${title}</h1>
+ <div class="hud"><span>⭐ <b id="gameScore">0</b></span><span>❤️ <b id="gameLives">${lives}</b></span><span>⏱️ <b id="gameTime">${time}</b></span><span>🌸 Round ${round}/3</span></div>
+ <div class="arena">${html}</div><div class="feedback" id="feedback"></div>`;
+}
+function clock(seconds,finish){
+ clearInterval(timer);let t=seconds;document.getElementById("gameTime").textContent=t;
+ timer=setInterval(()=>{t--;document.getElementById("gameTime").textContent=t;if(t<=0){clearInterval(timer);finish()}},1000);
+}
+function addScore(n){
+ score+=n;points+=n;document.getElementById("gameScore").textContent=score;best[currentGame]=Math.max(best[currentGame]||0,score);save();
+}
+let currentGame=0;
+function loseLife(text="Not quite! 💗"){
+ lives--;document.getElementById("gameLives").textContent=lives;
+ const a=document.querySelector(".arena");a.classList.remove("shake");void a.offsetWidth;a.classList.add("shake");
+ document.getElementById("feedback").textContent=text;
+ if(lives<=0)finishGame("💫 Out of lives!");
+}
+function finishGame(title){
+ stopAll();
+ best[currentGame]=Math.max(best[currentGame]||0,score);save();
+ const bonus=score>0?Math.floor(score/100):0;
+ document.getElementById("gamePanel").innerHTML=`
+ <div style="padding:25px"><div style="font-size:70px">🌟</div><h1>${title}</h1>
+ <h2>Score: ${score} ⭐</h2><p>Best score: ${best[currentGame]||score} ⭐</p>
+ <p>${bonus>0?"You earned "+score+" Star Points!":"Try again and build your score!"}</p>
+ <button class="primary" onclick="home()">Back to Game Library</button></div>`;
+ burst();
+}
+function roundNext(fn,delay=650){
+ setTimeout(()=>{if(round<3){round++;fn()}else finishGame("🎉 You cleared all 3 rounds!")},delay);
+}
+function burst(){
+ for(let i=0;i<18;i++){let e=document.createElement("div");e.className="confetti";e.textContent=["✦","⭐","🌸","✨","💗"][i%5];e.style.left=Math.random()*100+"%";e.style.top="-20px";e.style.animationDelay=Math.random()*.35+"s";document.body.appendChild(e);setTimeout(()=>e.remove(),1500)}
+}
+
+/* 1 — Spot the Correct */
+function makeScene(target,side){
+ return `<div class="scene">
+ <div class="cloud" style="left:${side?20:65}px"></div><div class="cloud" style="left:${side?65:25}px;top:85px;transform:scale(.7)"></div>
+ <div class="house"><div class="roof"></div><div class="win l"></div><div class="win r"></div><div class="door2"></div></div>
+ <button class="tapobj" style="left:12%;bottom:17%" onclick="spotWrong()">🌷</button>
+ <button class="tapobj" style="right:10%;bottom:16%" onclick="spotWrong()">🐱</button>
+ <button class="tapobj" style="right:12%;top:13%" onclick="spotWrong()">☀️</button>
+ <button class="tapobj" style="left:45%;bottom:12%" onclick="spotWin()">${target}</button>
+ </div>`;
+}
+function game1(){
+ currentGame=1;let target=["⚽","🦋","🍓"][round-1];
+ shell("Spot the Correct","🎯",`<p><b>Find the ONE object that appears in both scenes.</b></p><div class="scene-grid">${makeScene(target,false)}${makeScene(target,true)}</div>`);
+ clock(25,()=>finishGame("⏰ Time's up!"));
+}
+function spotWrong(){loseLife("That object is only in one scene! 🔍")}
+function spotWin(){addScore(150+streak*25);streak++;document.getElementById("feedback").textContent="✨ Correct!";burst();roundNext(game1)}
+
+/* 2 — Reality Glitch */
+function game2(){
+ currentGame=2;let target=["🐟","☂️","🚀"][round-1];
+ shell("Reality Glitch","🌀",`<p><b>Something is impossible. Tap it!</b></p>
+ <div class="glitch-scene">
+ <div style="position:absolute;left:12%;top:15%;font-size:45px">🌙</div><div style="position:absolute;right:14%;top:17%;font-size:43px">☁️</div>
+ <div style="position:absolute;left:17%;bottom:13%;font-size:45px">🌷</div><div style="position:absolute;right:18%;bottom:14%;font-size:45px">🏠</div>
+ <button id="glitchTarget" class="glitch-weird" style="left:45%;top:40%" onclick="glitchWin()">${target}</button></div>`);
+ let move=setInterval(()=>{let e=document.getElementById("glitchTarget");if(e){e.style.left=(5+Math.random()*82)+"%";e.style.top=(12+Math.random()*70)+"%"}},550);
+ extraTimer=move;clock(25,()=>finishGame("⏰ The glitch got away!"));
+}
+function glitchWin(){clearInterval(extraTimer);addScore(180+streak*20);streak++;document.getElementById("feedback").textContent="🌀 GLITCH CAUGHT!";burst();roundNext(game2)}
+
+/* 3 — Memory Mess */
+function game3(){
+ currentGame=3;
+ const sets=[
+ ["🌸","⭐","🍓","🦋"],
+ ["🐰","🍉","🌈","🐸","💎"],
+ ["🎀","🧁","🐼","🌷","🍭","☁️"],
+ ];
+ const vals=sets[round-1],cards=[...vals,...vals].sort(()=>Math.random()-.5);
+ shell("Memory Mess","🧠",`<p><b>Match every pair.</b> Consecutive matches build your combo!</p><div class="memory-board" id="memoryBoard"></div>`,round===1?40:50);
+ let first=null,busy=false,matches=0,combo=0;
+ cards.forEach(v=>{
+  const b=document.createElement("button");b.className="memory-card";b.textContent=v;b.dataset.value=v;
+  b.onclick=()=>{
+   if(busy||b.classList.contains("matched")||b===first)return;
+   b.classList.add("open");
+   if(!first){first=b;return}
+   busy=true;
+   if(first.dataset.value===b.dataset.value){
+    combo++;matches++;let gain=90+combo*30;first.classList.add("matched");b.classList.add("matched");addScore(gain);
+    document.getElementById("feedback").textContent="💖 Match! Combo x"+combo;
+    first=null;busy=false;burst();
+    if(matches===vals.length){clearInterval(timer);roundNext(game3)}
+   }else{
+    combo=0;document.getElementById("feedback").textContent="Try to remember them! 🧠";
+    setTimeout(()=>{first.classList.remove("open");b.classList.remove("open");first=null;busy=false},600);
+   }
+  };
+  document.getElementById("memoryBoard").appendChild(b);
+ });
+ clock(round===1?40:50,()=>finishGame("⏰ Memory time is over!"));
+}
+
+/* 4 — Object Switch */
+function game4(){
+ currentGame=4;
+ shell("Object Switch","📦",`<p><b>Drag each object into the matching place.</b></p>
+ <div class="drag-scene" id="dragScene">
+ <div class="drop-row"><div class="drop-zone" data-type="flower">🌷<br>Garden</div><div class="drop-zone" data-type="book">📚<br>Desk</div><div class="drop-zone" data-type="fish">🐟<br>Aquarium</div></div></div>`);
+ const area=document.getElementById("dragScene");
+ const sets=[
+ [["🌷","flower",12,12],["📚","book",43,13],["🐟","fish",75,12]],
+ [["🍎","apple",12,12],["🧸","toy",43,13],["✏️","pencil",75,12]],
+ [["🍪","cookie",12,12],["🎸","music",43,13],["☂️","umbrella",75,12]]
+ ];
+ const types=sets[round-1];
+ area.querySelector(".drop-row").innerHTML=round===1?
+ `<div class="drop-zone" data-type="flower">🌷<br>Garden</div><div class="drop-zone" data-type="book">📚<br>Desk</div><div class="drop-zone" data-type="fish">🐟<br>Aquarium</div>`:
+ round===2?
+ `<div class="drop-zone" data-type="apple">🍎<br>Fruit Bowl</div><div class="drop-zone" data-type="toy">🧸<br>Toy Box</div><div class="drop-zone" data-type="pencil">✏️<br>Pencil Cup</div>`:
+ `<div class="drop-zone" data-type="cookie">🍪<br>Cookie Jar</div><div class="drop-zone" data-type="music">🎸<br>Music Room</div><div class="drop-zone" data-type="umbrella">☂️<br>Umbrella Stand</div>`;
+ let placed=0;
+ types.forEach(([emoji,type,x,y])=>{
+  const e=document.createElement("div");e.className="drag-item";e.textContent=emoji;e.dataset.type=type;e.style.left=x+"%";e.style.top=y+"%";area.appendChild(e);
+  let sx=0,sy=0,ol=0,ot=0,moving=false;
+  e.onpointerdown=ev=>{e.setPointerCapture(ev.pointerId);sx=ev.clientX;sy=ev.clientY;ol=e.offsetLeft;ot=e.offsetTop;moving=true};
+  e.onpointermove=ev=>{if(!moving)return;const r=area.getBoundingClientRect();e.style.left=((ol+ev.clientX-sx)/r.width*100)+"%";e.style.top=((ot+ev.clientY-sy)/r.height*100)+"%"};
+  e.onpointerup=()=>{
+   if(!moving)return;moving=false;
+   const a=e.getBoundingClientRect();let zone=[...area.querySelectorAll(".drop-zone")].find(z=>{const r=z.getBoundingClientRect();return a.left+a.width/2>r.left&&a.left+a.width/2<r.right&&a.top+a.height/2>r.top&&a.top+a.height/2<r.bottom});
+   if(zone){
+    if(zone.dataset.type===type){zone.classList.add("good");e.remove();placed++;addScore(120);document.getElementById("feedback").textContent="✨ Perfect place!";burst();if(placed===types.length){clearInterval(timer);roundNext(game4)}}
+    else document.getElementById("feedback").textContent="Hmm... that belongs somewhere else! 💭";
+   }
+  };
+ });
+ clock(45,()=>finishGame("⏰ Sorting time is over!"));
+}
+
+/* 5 — Blink & Catch */
+function game5(){
+ currentGame=5;let hits=0,total=round===1?8:round===2?10:12;
+ shell("Blink & Catch","👀",`<p><b>Tap the target every time it appears.</b> ${total} catches to clear this round.</p><div class="blink-scene" id="blinkScene"><button id="blinkTarget" class="blink-target">⭐</button></div><div class="progress"><i id="blinkProgress"></i></div>`);
+ const target=document.getElementById("blinkTarget"),area=document.getElementById("blinkScene");
+ function show(){if(hits>=total)return;target.style.left=(Math.random()*82)+"%";target.style.top=(Math.random()*72)+"%";target.textContent=["⭐","💗","🌸","✨"][Math.floor(Math.random()*4)];target.classList.add("show");setTimeout(()=>target.classList.remove("show"),550)}
+ target.onclick=()=>{if(!target.classList.contains("show"))return;hits++;addScore(70+Math.min(streak,8)*10);streak++;document.getElementById("feedback").textContent="⚡ Nice catch!";document.getElementById("blinkProgress").style.width=(hits/total*100)+"%";target.classList.remove("show");setTimeout(show,180);if(hits>=total){clearInterval(extraTimer);clearInterval(timer);roundNext(game5)}};
+ show();extraTimer=setInterval(show,850);clock(round===1?25:22,()=>{clearInterval(extraTimer);finishGame("⏰ Too slow!")});
+}
+
+/* 6 — Who Lives Here? */
+function game6(){
+ currentGame=6;
+ const cases=[
+ {home:"🐱",clues:["🧶","🐟","🐾"],answer:"cat"},
+ {home:"🧑‍🍳",clues:["🍳","🥄","🎂"],answer:"chef"},
+ {home:"🧑‍🚀",clues:["🚀","🌙","🪐"],answer:"astronaut"}
+ ];
+ const c=cases[round-1];let found=new Set();
+ shell("Who Lives Here?","🏠",`<p><b>Explore the house. Tap three clues to unlock the answer.</b></p>
+ <div class="house-explore">
+  <div class="room bed">🛏️</div><div class="room kitchen">🍽️</div><div class="room living">🛋️ 📺</div>
+  <button class="clue" data-c="0" style="left:13%;top:20%">${c.clues[0]}</button>
+  <button class="clue" data-c="1" style="right:14%;top:20%">${c.clues[1]}</button>
+  <button class="clue" data-c="2" style="left:46%;bottom:18%">${c.clues[2]}</button>
+ </div><div id="residentArea" class="hidden"><p>✨ All clues found! Who lives here?</p><div class="resident-grid">
+ <button class="resident" onclick="residentAnswer('cat')">🐱<small>Cat owner</small></button>
+ <button class="resident" onclick="residentAnswer('chef')">🧑‍🍳<small>Chef</small></button>
+ <button class="resident" onclick="residentAnswer('astronaut')">🧑‍🚀<small>Astronaut</small></button></div></div>`);
+ document.querySelectorAll(".clue").forEach(b=>b.onclick=()=>{if(!found.has(b.dataset.c)){found.add(b.dataset.c);b.style.opacity=".35";addScore(35);document.getElementById("feedback").textContent="🔎 Clue found!";if(found.size===3)document.getElementById("residentArea").classList.remove("hidden")}});
+ window.residentAnswer=ans=>{if(ans===c.answer){addScore(220);document.getElementById("feedback").textContent="🏠 Correct resident!";burst();roundNext(game6)}else loseLife("That doesn't match the clues! 🔍")};
+ clock(50,()=>finishGame("⏰ The house mystery timed out!"));
+}
+
+/* 7 — The Secret Object */
+function game7(){
+ currentGame=7;
+ const cases=[
+ {obj:"🔑",clues:["It opens something.","It is small.","It is often made of metal."],opts:[["🔑","Key"],["🍎","Apple"],["🎈","Balloon"],["🧸","Toy"]]},
+ {obj:"🎒",clues:["You can carry it.","It can hold school things.","It has straps."],opts:[["🎒","Backpack"],["☂️","Umbrella"],["🍰","Cake"],["🛏️","Bed"]]},
+ {obj:"🔭",clues:["You look through it.","It helps you see far away.","It is used to explore the sky."],opts:[["🔭","Telescope"],["🍉","Watermelon"],["👟","Shoe"],["🧹","Broom"]]}
+ ];
+ const c=cases[round-1];let unlocked=0;
+ shell("The Secret Object","🔎",`<p><b>Unlock clues one by one, then solve the mystery.</b></p><div class="clue-card" id="clues"><b>Clues unlocked:</b><div id="clueText">None yet!</div><button class="clue-btn" id="unlock">🔓 Unlock clue</button></div><div class="secret-options">${c.opts.map(o=>`<button class="secret-option" onclick="secretAnswer('${o[0]}')">${o[0]}<small>${o[1]}</small></button>`).join("")}</div>`);
+ document.getElementById("unlock").onclick=()=>{if(unlocked<c.clues.length){document.getElementById("clueText").innerHTML+=`<div>• ${c.clues[unlocked]}</div>`;unlocked++;addScore(20);if(unlocked===c.clues.length)document.getElementById("unlock").textContent="✨ All clues unlocked!"}};
+ window.secretAnswer=o=>{if(o===c.obj){addScore(240+(c.clues.length-unlocked)*35);document.getElementById("feedback").textContent="🔓 Mystery solved!";burst();roundNext(game7)}else loseLife("Not the secret object! 🔍")};
+ clock(55,()=>finishGame("⏰ The mystery stayed secret!"));
+}
+
+/* 8 — Same Thing, Different World */
+function game8(){
+ currentGame=8;
+ const pairs=[
+ [["🌙","Moon"],["🐚","Shell"],["⭐","Star"]],
+ [["🌊","Wave"],["☁️","Cloud"],["🔥","Fire"]],
+ [["🌸","Flower"],["🦋","Butterfly"],["💎","Crystal"]]
+ ];
+ const p=pairs[round-1];let selected=null;
+ shell("Same Thing, Different World","🌎",`<p><b>Tap two objects that are connected.</b></p><div class="worlds">
+ <div class="world space"><div style="position:absolute;left:15%;top:12%;color:white;font-size:25px">✦ ✦ ✦</div>${p.map((x,i)=>`<button class="connection" data-i="${i}" data-side="a" style="left:${15+i*32}%;top:${35+(i%2)*28}%">${x[0]}</button>`).join("")}</div>
+ <div class="world ocean"><div style="position:absolute;left:10%;top:12%;font-size:28px">〰️〰️</div>${p.map((x,i)=>`<button class="connection" data-i="${i}" data-side="b" style="left:${15+i*32}%;top:${35+(i%2)*28}%">${["🐚","💧","🌊"][i]}</button>`).join("")}</div>
+ </div>`);
+ document.querySelectorAll(".connection").forEach(b=>b.onclick=()=>{
+  const key=b.dataset.i,both=document.querySelectorAll(`.connection[data-i="${key}"]`);
+  if(!selected){selected=key;both.forEach(x=>x.classList.add("selected"));document.getElementById("feedback").textContent="Now find its connection in the other world!";return}
+  if(selected===key && b.dataset.side!=="a" || selected===key && b.dataset.side==="a" && document.querySelector('.connection[data-i="'+key+'"][data-side="b"]').classList.contains("selected")){addScore(160);document.getElementById("feedback").textContent="🌎 Perfect connection!";burst();roundNext(game8);return}
+  document.querySelectorAll(".connection").forEach(x=>x.classList.remove("selected"));selected=key;both.forEach(x=>x.classList.add("selected"));
+ });
+ clock(45,()=>finishGame("⏰ The worlds drifted apart!"));
+}
+
+/* profile */
+function openProfile(){
+ stopAll();document.getElementById("home").classList.add("hidden");let s=document.getElementById("screen");s.classList.remove("hidden");
+ s.innerHTML=`<button class="back" onclick="home()">← Back</button><div class="panel"><div class="profile-avatar">${avatar}</div><h1>👤 ${playerName}</h1><p>⭐ Star Points: <b>${points}</b></p><input id="nameInput" maxlength="20" value="${playerName}"><br><br><button class="primary" onclick="saveName()">Save Name</button><h2>🏆 Best Scores</h2><div class="score-list">${games.map((g,i)=>`<div class="score-box">${g[0]} ${g[1]}<br><b>${best[i+1]||0} ⭐</b></div>`).join("")}</div></div>`;
+}
+function saveName(){let v=document.getElementById("nameInput").value.trim();if(v)playerName=v;save();home()}
+
+/* shop */
+const shopItems=[
+ ["💙","Blue Dream Wallpaper",250,"blue"],["💜","Purple Galaxy Wallpaper",250,"purple"],["💗","Pink Bloom Wallpaper",250,"pink"],["🌈","Random Wallpaper",400,"rainbow"],["✨","Sparkle Effect",500,"sparkle"],["🏆","Golden Badge",1000,"badge"],["🌟","Special Theme",2000,"special"]
+];
+function openShop(){
+ stopAll();document.getElementById("home").classList.add("hidden");let s=document.getElementById("screen");s.classList.remove("hidden");
+ s.innerHTML=`<button class="back" onclick="home()">← Back</button><div class="panel"><h1>🛍️ Star Bloom Shop</h1><p>⭐ ${points} Star Points</p><div class="shop-grid">${shopItems.map(x=>`<div class="shop-item"><div class="shop-emoji">${x[0]}</div><h3>${x[1]}</h3><p>⭐ ${x[2]}</p><button onclick="buyShop('${x[3]}',${x[2]},'${x[1]}')">${x[3]==="sparkle"?"BUY":"BUY / EQUIP"}</button></div>`).join("")}</div></div>`;
+}
+function buyShop(type,cost,label){
+ if(type==="sparkle"){
+  if(sparkles){sparkles=false;save();openShop();return}
+  if(points<cost){alert("You need more ⭐ Star Points!");return}
+  points-=cost;sparkles=true;save();openShop();return;
+ }
+ if(points<cost){alert("You need more ⭐ Star Points!");return}
+ points-=cost;wallpaper=type==="special"?"purple":type;save();alert("✨ "+label+" equipped!");openShop();
+}
+
+/* avatars */
+const avatarItems=[["🐰","Bunny",0],["🐱","Kitty",0],["🐻","Bear",0],["🐥","Chick",0],["🦊","Fox",100],["🐼","Panda",200],["🐸","Frog",300],["🧚","Fairy",500],["🦄","Unicorn",750],["🐉","Dragon",1000],["👑","Royal",2000]];
+function openAvatars(){
+ stopAll();document.getElementById("home").classList.add("hidden");let s=document.getElementById("screen");s.classList.remove("hidden");
+ s.innerHTML=`<button class="back" onclick="home()">← Back</button><div class="panel"><h1>🧚 Avatar Shop</h1><p>⭐ ${points} Star Points</p><div class="shop-grid">${avatarItems.map(x=>`<div class="shop-item"><div class="shop-emoji">${x[0]}</div><h3>${x[1]}</h3><p>${x[2]?"⭐ "+x[2]:"FREE"}</p><button onclick="chooseAvatar('${x[0]}',${x[2]},'${x[1]}')">${x[2]?"UNLOCK":"USE"}</button></div>`).join("")}</div></div>`;
+}
+function chooseAvatar(icon,cost,label){
+ if(cost&&points<cost){alert("You need more ⭐ Star Points!");return}
+ if(cost)points-=cost;avatar=icon;save();alert("✨ "+label+" is now your avatar!");home();
+}
+
+renderHome();applyTheme();
+</script>
+</body>
+</html>
